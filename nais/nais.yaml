@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: dittnav-event-handler
+  name: dittnav-eventer-modia
   namespace: {{namespace}}
   labels:
     team: personbruker
@@ -28,7 +28,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /kv/{{cluster}}/sbs/dittnav-event-handler/{{namespace}}
+      - kvPath: /kv/{{cluster}}/sbs/dittnav-eventer-modia/{{namespace}}
         mountPath: /var/run/secrets/nais.io/vault
       - kvPath: /serviceuser/data/{{environment}}/srvdn-e-handler
         mountPath: /secret/serviceuser

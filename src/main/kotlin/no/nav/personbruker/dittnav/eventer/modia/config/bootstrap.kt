@@ -17,7 +17,6 @@ import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerFactory
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
-import no.nav.personbruker.dittnav.eventer.modia.done.doneApi
 import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
@@ -47,7 +46,6 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
             oppgaveApi(appContext.oppgaveEventService)
             beskjedApi(appContext.beskjedEventService)
             innboksApi(appContext.innboksEventService)
-            doneApi(appContext.doneEventService)
         }
     }
 
@@ -57,7 +55,6 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
 private fun Application.configureShutdownHook(appContext: ApplicationContext) {
     environment.monitor.subscribe(ApplicationStopPreparing) {
         closeTheDatabaseConectionPool(appContext)
-        appContext.doneProducer.close()
     }
 }
 

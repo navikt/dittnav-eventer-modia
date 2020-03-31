@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val prometheusVersion = "0.8.1"
 val ktorVersion = "1.3.1"
 val junitVersion = "5.4.1"
-val kafkaVersion = "2.2.0"
 val confluentVersion = "5.2.0"
 val logstashVersion = 5.2
 val logbackVersion = "1.2.3"
@@ -17,7 +16,6 @@ val kluentVersion = "1.52"
 val mockkVersion = "1.9.3"
 val jjwtVersion = "0.11.0"
 val bcproVersion = "1.64"
-val kafkaEmbeddedEnv = "2.1.1"
 val navTokenValidator = "1.1.0"
 val brukernotifikasjonSchemaVersion = "1.2020.02.07-13.16-fa9d319688b1"
 
@@ -64,15 +62,8 @@ dependencies {
     compile("io.ktor:ktor-jackson:$ktorVersion")
     compile("io.ktor:ktor-server-netty:$ktorVersion")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    compile("org.apache.kafka:kafka-clients:$kafkaVersion")
-    compile("io.confluent:kafka-avro-serializer:$confluentVersion")
-    compile("no.nav:brukernotifikasjon-schemas:$brukernotifikasjonSchemaVersion")
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testCompile(kotlin("test-junit5"))
-    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnv")
-    testImplementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
-    testImplementation("org.apache.kafka:kafka-streams:$kafkaVersion")
-    testImplementation("io.confluent:kafka-schema-registry:$confluentVersion")
     testImplementation("com.h2database:h2:$h2Version")
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -107,12 +98,6 @@ tasks {
         environment("OIDC_DISCOVERY_URL", "http://localhost:9000/.well-known/openid-configuration")
         environment("OIDC_ACCEPTED_AUDIENCE", "stubOidcClient")
         environment("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "pid")
-
-        environment("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
-        environment("KAFKA_SCHEMAREGISTRY_SERVERS", "http://localhost:8081")
-        environment("SERVICEUSER_USERNAME", "username")
-        environment("SERVICEUSER_PASSWORD", "password")
-        environment("GROUP_ID", "dittnav_events")
 
         environment("DB_HOST", "localhost:5432")
         environment("DB_NAME", "dittnav-event-cache-preprod")

@@ -1,0 +1,9 @@
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/oppgave/aktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/oppgave/inaktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/oppgave/all
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/beskjed/aktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/beskjed/inaktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/beskjed/all
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/innboks/aktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/innboks/inaktive
+https://dittnav-event-handler-q1.dev-sbs.nais.io/fetch/innboks/all

@@ -1,0 +1,41 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: dittnav-event-handler
+  namespace: {{namespace}}
+  labels:
+    team: personbruker
+spec:
+  image: {{version}}
+  port: 8080
+  liveness:
+    path: /isAlive
+    initialDelay: 5
+  readiness:
+    path: /isReady
+    initialDelay: 5
+  prometheus:
+    enabled: true
+    path: /metrics
+  replicas:
+    min: 2
+    max: 4
+  webproxy: true
+  ingresses:
+{{#each ingresses}}
+  - "{{this}}"
+{{/each}}
+  vault:
+    enabled: true
+    paths:
+      - kvPath: /kv/{{cluster}}/sbs/dittnav-event-handler/{{namespace}}
+        mountPath: /var/run/secrets/nais.io/vault
+      - kvPath: /serviceuser/data/{{environment}}/srvdn-e-handler
+        mountPath: /secret/serviceuser
+  resources:
+    limits:
+      cpu: "3"
+      memory: 768Mi
+    requests:
+      cpu: "500m"
+      memory: 384Mi

@@ -1,14 +1,14 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
 import Beskjed
-import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventer.modia.common.User
 import no.nav.personbruker.dittnav.eventer.modia.common.database.map
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllBeskjedForInnloggetBruker(bruker: InnloggetBruker): List<Beskjed> =
+fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
                 .use {
                     it.setString(1, bruker.ident)
@@ -17,10 +17,10 @@ fun Connection.getAllBeskjedForInnloggetBruker(bruker: InnloggetBruker): List<Be
                     }
                 }
 
-fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: InnloggetBruker): List<Beskjed> =
+fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         getBeskjedForInnloggetBruker(bruker, false)
 
-fun Connection.getAktivBeskjedForInnloggetBruker(bruker: InnloggetBruker): List<Beskjed> =
+fun Connection.getAktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
                 .use {
                     it.setString(1, bruker.ident)
@@ -48,7 +48,7 @@ fun ResultSet.toBeskjed(): Beskjed {
     )
 }
 
-private fun Connection.getBeskjedForInnloggetBruker(bruker: InnloggetBruker, aktiv: Boolean): List<Beskjed> {
+private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean): List<Beskjed> {
     return prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
             .use {
                 it.setString(1, bruker.ident)

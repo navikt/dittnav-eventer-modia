@@ -1,13 +1,13 @@
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
-import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventer.modia.common.User
 import no.nav.personbruker.dittnav.eventer.modia.common.database.map
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllInnboksForInnloggetBruker(bruker: InnloggetBruker): List<Innboks> =
+fun Connection.getAllInnboksForInnloggetBruker(bruker: User): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ?""")
             .use {
                 it.setString(1, bruker.ident)
@@ -16,13 +16,13 @@ fun Connection.getAllInnboksForInnloggetBruker(bruker: InnloggetBruker): List<In
                 }
             }
 
-fun Connection.getInaktivInnboksForInnloggetBruker(bruker: InnloggetBruker): List<Innboks> =
+fun Connection.getInaktivInnboksForInnloggetBruker(bruker: User): List<Innboks> =
         getInnboksForInnloggetBruker(bruker, false)
 
-fun Connection.getAktivInnboksForInnloggetBruker(bruker: InnloggetBruker): List<Innboks> =
+fun Connection.getAktivInnboksForInnloggetBruker(bruker: User): List<Innboks> =
         getInnboksForInnloggetBruker(bruker, true)
 
-private fun Connection.getInnboksForInnloggetBruker(bruker: InnloggetBruker, aktiv: Boolean): List<Innboks> =
+private fun Connection.getInnboksForInnloggetBruker(bruker: User, aktiv: Boolean): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ? AND aktiv = ?""")
             .use {
                 it.setString(1, bruker.ident)

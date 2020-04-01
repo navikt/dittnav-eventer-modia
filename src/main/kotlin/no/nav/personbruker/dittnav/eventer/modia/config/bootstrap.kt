@@ -6,6 +6,7 @@ import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
+import io.ktor.auth.jwt.jwt
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.jackson.jackson
@@ -19,7 +20,6 @@ import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerFactory
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
 import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
-import no.nav.security.token.support.ktor.tokenValidationSupport
 
 @KtorExperimentalAPI
 fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()) {
@@ -37,7 +37,9 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     val config = this.environment.config
 
     install(Authentication) {
-        tokenValidationSupport(config = config)
+        jwt {
+            setupIssoAuthentication(appContext.environment)
+        }
     }
 
     routing {

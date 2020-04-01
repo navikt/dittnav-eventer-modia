@@ -30,8 +30,6 @@ spec:
     paths:
       - kvPath: /kv/{{cluster}}/sbs/dittnav-eventer-modia/{{namespace}}
         mountPath: /var/run/secrets/nais.io/vault
-      - kvPath: /serviceuser/data/{{environment}}/srvdn-e-handler
-        mountPath: /secret/serviceuser
   resources:
     limits:
       cpu: "3"

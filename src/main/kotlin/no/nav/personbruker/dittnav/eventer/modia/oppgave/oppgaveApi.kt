@@ -2,6 +2,7 @@ package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -16,7 +17,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
 
     get("/fetch/oppgave/aktive") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val aktiveOppgaveEvents = oppgaveEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, aktiveOppgaveEvents)
         } catch (exception: Exception) {
@@ -26,7 +27,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
 
     get("/fetch/oppgave/inaktive") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val inaktiveOppgaveEvents = oppgaveEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, inaktiveOppgaveEvents)
         } catch(exception: Exception) {
@@ -36,7 +37,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
 
     get("/fetch/oppgave/all") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val oppgaveEvents = oppgaveEventService.getAllCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, oppgaveEvents)
         } catch(exception: Exception) {

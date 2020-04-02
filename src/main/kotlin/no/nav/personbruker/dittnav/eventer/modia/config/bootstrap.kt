@@ -2,7 +2,9 @@ package no.nav.personbruker.dittnav.eventer.modia.config
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.ktor.application.*
+import io.ktor.application.Application
+import io.ktor.application.ApplicationStopPreparing
+import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt

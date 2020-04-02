@@ -2,6 +2,7 @@ package no.nav.personbruker.dittnav.eventer.modia.innboks
 
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -16,7 +17,7 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
 
     get("/fetch/innboks/aktive") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val aktiveInnboksEvents = innboksEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, aktiveInnboksEvents)
         } catch(exception: Exception) {
@@ -26,7 +27,7 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
 
     get("/fetch/innboks/inaktive") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val inaktiveInnboksEvents = innboksEventService.getInctiveCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, inaktiveInnboksEvents)
         } catch(exception: Exception) {
@@ -36,7 +37,7 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
 
     get("/fetch/innboks/all") {
         try {
-            val userToFetchEventsFor = User("000")
+            val userToFetchEventsFor = call.receive<User>()
             val innboksEvents = innboksEventService.getAllCachedEventsForUser(userToFetchEventsFor)
             call.respond(HttpStatusCode.OK, innboksEvents)
         } catch(exception: Exception) {

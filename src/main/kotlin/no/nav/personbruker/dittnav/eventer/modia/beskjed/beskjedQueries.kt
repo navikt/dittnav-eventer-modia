@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, bruker.ident)
+                    it.setString(1, bruker.fodselsnummer)
                     it.executeQuery().map {
                         toBeskjed()
                     }
@@ -23,7 +23,7 @@ fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> 
 fun Connection.getAktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
                 .use {
-                    it.setString(1, bruker.ident)
+                    it.setString(1, bruker.fodselsnummer)
                     it.setBoolean(2, true)
                     it.executeQuery().map {
                         toBeskjed()
@@ -51,7 +51,7 @@ fun ResultSet.toBeskjed(): Beskjed {
 private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean): List<Beskjed> {
     return prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
             .use {
-                it.setString(1, bruker.ident)
+                it.setString(1, bruker.fodselsnummer)
                 it.setBoolean(2, aktiv)
                 it.executeQuery().map {
                     toBeskjed()

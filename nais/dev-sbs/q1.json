@@ -1,9 +1,0 @@
-{
-  "namespace": "q1",
-  "cluster": "preprod",
-  "environment": "dev",
-  "ingresses": [
-    "https://dittnav-eventer-modia-q1.dev-sbs.nais.io",
-    "https://dittnav-eventer-modia.nais.oera-q.local"
-  ]
-}

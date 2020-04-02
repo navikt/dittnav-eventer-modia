@@ -16,7 +16,6 @@ val kluentVersion = "1.52"
 val mockkVersion = "1.9.3"
 val jjwtVersion = "0.11.0"
 val bcproVersion = "1.64"
-val navTokenValidator = "1.1.0"
 val brukernotifikasjonSchemaVersion = "1.2020.02.07-13.16-fa9d319688b1"
 
 plugins {
@@ -45,7 +44,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile("no.nav.security:token-validation-ktor:$navTokenValidator")
     compile("no.nav:vault-jdbc:$vaultJdbcVersion")
     compile("com.zaxxer:HikariCP:$hikariCPVersion")
     compile("org.postgresql:postgresql:$postgresVersion")

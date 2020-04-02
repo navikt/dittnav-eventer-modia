@@ -1,0 +1,9 @@
+{
+  "namespace": "default",
+  "cluster": "preprod",
+  "environment": "dev",
+  "ingresses": [
+    "https://dittnav-eventer-modia.dev-fss.nais.io",
+    "https://dittnav-eventer-modia.nais.preprod.local"
+  ]
+}

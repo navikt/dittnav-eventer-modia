@@ -13,7 +13,7 @@ internal class UserTest {
 
         val userToFetchEventsFor = InnloggetBrukerObjectMother.createInnloggetBruker(expectedIdent, expectedInnloggingsnivaa)
 
-        userToFetchEventsFor.ident `should be equal to` expectedIdent
+        userToFetchEventsFor.fodselsnummer `should be equal to` expectedIdent
     }
 
     @Test
@@ -22,7 +22,7 @@ internal class UserTest {
 
         val outputOfToString = userToFetchEventsFor.toString()
 
-        outputOfToString `should not contain` (userToFetchEventsFor.ident)
+        outputOfToString `should not contain` (userToFetchEventsFor.fodselsnummer)
     }
 
 }

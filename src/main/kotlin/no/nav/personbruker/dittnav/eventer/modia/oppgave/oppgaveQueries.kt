@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 fun Connection.getAllOppgaveForInnloggetBruker(bruker: User): List<Oppgave> =
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, bruker.ident)
+                    it.setString(1, bruker.fodselsnummer)
                     it.executeQuery().map {
                         toOppgave()
                     }
@@ -25,7 +25,7 @@ fun Connection.getAktivOppgaveForInnloggetBruker(bruker: User): List<Oppgave> =
 private fun Connection.getOppgaveForInnloggetBruker(bruker: User, aktiv: Boolean): List<Oppgave> =
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ? AND aktiv = ?""")
                 .use {
-                    it.setString(1, bruker.ident)
+                    it.setString(1, bruker.fodselsnummer)
                     it.setBoolean(2, aktiv)
                     it.executeQuery().map {
                         toOppgave()

@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 
 data class Innboks (
         @JsonIgnore val id: Int,
-        @JsonIgnore val produsent: String,
+        val produsent: String,
         val eventTidspunkt: ZonedDateTime,
         val fodselsnummer: String,
         val eventId: String,

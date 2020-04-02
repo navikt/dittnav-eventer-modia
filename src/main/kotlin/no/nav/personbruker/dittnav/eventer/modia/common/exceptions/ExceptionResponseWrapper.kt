@@ -10,11 +10,11 @@ suspend fun respondWithError(call: ApplicationCall, log: Logger, exception: Exce
     when(exception) {
         is EventCacheException -> {
             call.respond(HttpStatusCode.ServiceUnavailable)
-            log.warn("Klarte ikke hente eventer fra cache. Returnerer feilkode til frontend", exception)
+            log.warn("Klarte ikke hente eventer fra cache. Returnerer feilkode.", exception)
         }
         else -> {
             call.respond(HttpStatusCode.InternalServerError)
-            log.error("Ukjent feil oppstod ved henting av eventer fra cache. Returnerer feilkode til frontend", exception)
+            log.error("Ukjent feil oppstod ved henting av eventer fra cache. Returnerer feilkode.", exception)
         }
     }
 }

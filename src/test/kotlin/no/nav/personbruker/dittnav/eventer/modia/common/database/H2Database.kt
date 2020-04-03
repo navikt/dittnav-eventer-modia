@@ -1,7 +1,7 @@
 package no.nav.personbruker.dittnav.eventer.modia.common.database
 
 import com.zaxxer.hikari.HikariDataSource
-import org.flywaydb.core.Flyway
+import kotlinx.coroutines.runBlocking
 
 class H2Database : Database {
 
@@ -9,7 +9,7 @@ class H2Database : Database {
 
     init {
         memDataSource = createDataSource()
-        flyway()
+        createTablesAndViews()
     }
 
     override val dataSource: HikariDataSource
@@ -24,10 +24,10 @@ class H2Database : Database {
         }
     }
 
-    private fun flyway() {
-        Flyway.configure()
-                .dataSource(dataSource)
-                .load()
-                .migrate()
+    private fun createTablesAndViews() {
+        runBlocking {
+            val fileContent = this::class.java.getResource("/db/createTablesAndViews.sql").readText()
+            dbQuery { prepareStatement(fileContent).execute() }
+        }
     }
 }

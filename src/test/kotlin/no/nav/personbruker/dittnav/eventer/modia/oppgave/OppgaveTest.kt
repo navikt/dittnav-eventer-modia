@@ -7,7 +7,7 @@ class OppgaveTest {
 
     @Test
     fun `skal returnere maskerte data fra toString-metoden`() {
-        val oppgave = createOppgave(1, "dummyEventId1", "dummmyFnr1", true)
+        val oppgave = OppgaveObjectMother.createOppgave(1, "dummyEventId1", "dummmyFnr1", true)
         val oppgaveAsString = oppgave.toString()
         oppgaveAsString `should contain` "fodselsnummer=***"
         oppgaveAsString `should contain` "tekst=***"

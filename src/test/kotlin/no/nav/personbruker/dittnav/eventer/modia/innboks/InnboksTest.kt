@@ -7,7 +7,7 @@ class InnboksTest {
 
     @Test
     fun `skal returnere maskerte data fra toString-metoden`() {
-        val innboks = createInnboks(1, "dummyEventId1", "dummmyFnr1", true)
+        val innboks = InnboksObjectMother.createInnboks(1, "dummyEventId1", "dummmyFnr1", true)
         val innboksAsString = innboks.toString()
         innboksAsString `should contain` "fodselsnummer=***"
         innboksAsString `should contain` "tekst=***"

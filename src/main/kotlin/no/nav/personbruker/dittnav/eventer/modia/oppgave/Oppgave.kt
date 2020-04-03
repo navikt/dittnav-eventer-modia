@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.ZonedDateTime
 
 data class Oppgave(
-        @JsonIgnore val id: Int?,
+        @JsonIgnore val id: Int,
         val fodselsnummer: String,
         val grupperingsId: String,
         val eventId: String,

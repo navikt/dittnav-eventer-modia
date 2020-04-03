@@ -9,20 +9,18 @@ fun Connection.createInnboks(innbokseventer: List<Innboks>) =
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
                 .use { pStatement ->
                     innbokseventer.forEach { innboks ->
-                        run {
-                            pStatement.setInt(1, innboks.id)
-                            pStatement.setString(2, innboks.produsent)
-                            pStatement.setObject(3, innboks.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
-                            pStatement.setString(4, innboks.fodselsnummer)
-                            pStatement.setString(5, innboks.eventId)
-                            pStatement.setString(6, innboks.grupperingsId)
-                            pStatement.setString(7, innboks.tekst)
-                            pStatement.setString(8, innboks.link)
-                            pStatement.setInt(9, innboks.sikkerhetsnivaa)
-                            pStatement.setObject(10, innboks.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
-                            pStatement.setBoolean(11, innboks.aktiv)
-                            pStatement.addBatch()
-                        }
+                        pStatement.setInt(1, innboks.id)
+                        pStatement.setString(2, innboks.produsent)
+                        pStatement.setObject(3, innboks.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
+                        pStatement.setString(4, innboks.fodselsnummer)
+                        pStatement.setString(5, innboks.eventId)
+                        pStatement.setString(6, innboks.grupperingsId)
+                        pStatement.setString(7, innboks.tekst)
+                        pStatement.setString(8, innboks.link)
+                        pStatement.setInt(9, innboks.sikkerhetsnivaa)
+                        pStatement.setObject(10, innboks.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
+                        pStatement.setBoolean(11, innboks.aktiv)
+                        pStatement.addBatch()
                     }
                     pStatement.executeBatch()
                 }
@@ -31,10 +29,8 @@ fun Connection.deleteInnboks(innbokseventer: List<Innboks>) =
         prepareStatement("""DELETE FROM innboks WHERE eventId = ?""")
                 .use { pStatement ->
                     innbokseventer.forEach { innboks ->
-                        run {
-                            pStatement.setString(1, innboks.eventId)
-                            pStatement.addBatch()
-                        }
+                        pStatement.setString(1, innboks.eventId)
+                        pStatement.addBatch()
                     }
                     pStatement.executeBatch()
                 }

@@ -4,37 +4,37 @@ import no.nav.personbruker.dittnav.eventer.modia.oppgave.Oppgave
 import java.sql.Connection
 import java.sql.Types
 
-fun Connection.createOppgave(oppgave: List<Oppgave>) =
+fun Connection.createOppgave(oppgaver: List<Oppgave>) =
         prepareStatement("""INSERT INTO oppgave(id, produsent, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
-                .use {
-                    oppgave.forEach { i ->
+                .use { pStatement ->
+                    oppgaver.forEach { oppgave ->
                         run {
-                            it.setInt(1, i.id)
-                            it.setString(2, i.produsent)
-                            it.setObject(3, i.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
-                            it.setString(4, i.fodselsnummer)
-                            it.setString(5, i.eventId)
-                            it.setString(6, i.grupperingsId)
-                            it.setString(7, i.tekst)
-                            it.setString(8, i.link)
-                            it.setInt(9, i.sikkerhetsnivaa)
-                            it.setObject(10, i.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
-                            it.setBoolean(11, i.aktiv)
-                            it.addBatch()
+                            pStatement.setInt(1, oppgave.id)
+                            pStatement.setString(2, oppgave.produsent)
+                            pStatement.setObject(3, oppgave.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
+                            pStatement.setString(4, oppgave.fodselsnummer)
+                            pStatement.setString(5, oppgave.eventId)
+                            pStatement.setString(6, oppgave.grupperingsId)
+                            pStatement.setString(7, oppgave.tekst)
+                            pStatement.setString(8, oppgave.link)
+                            pStatement.setInt(9, oppgave.sikkerhetsnivaa)
+                            pStatement.setObject(10, oppgave.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
+                            pStatement.setBoolean(11, oppgave.aktiv)
+                            pStatement.addBatch()
                         }
                     }
-                    it.executeBatch()
+                    pStatement.executeBatch()
                 }
 
-fun Connection.deleteOppgave(oppgave: List<Oppgave>) =
+fun Connection.deleteOppgave(oppgaver: List<Oppgave>) =
         prepareStatement("""DELETE FROM oppgave WHERE eventId = ?""")
-                .use {
-                    oppgave.forEach { i ->
+                .use { pStatement ->
+                    oppgaver.forEach { oppgave ->
                         run {
-                            it.setString(1, i.eventId)
-                            it.addBatch()
+                            pStatement.setString(1, oppgave.eventId)
+                            pStatement.addBatch()
                         }
                     }
-                    it.executeBatch()
+                    pStatement.executeBatch()
                 }

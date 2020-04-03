@@ -4,39 +4,39 @@ import Beskjed
 import java.sql.Connection
 import java.sql.Types
 
-fun Connection.createBeskjed(beskjed: List<Beskjed>) =
+fun Connection.createBeskjed(beskjeder: List<Beskjed>) =
         prepareStatement("""INSERT INTO beskjed(id, produsent, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv, synligFremTil, uid)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
-                .use {
-                    beskjed.forEach { i ->
+                .use { pStatement ->
+                    beskjeder.forEach { beskjed ->
                         run {
-                            it.setInt(1, i.id)
-                            it.setString(2, i.produsent)
-                            it.setObject(3, i.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
-                            it.setString(4, i.fodselsnummer)
-                            it.setString(5, i.eventId)
-                            it.setString(6, i.grupperingsId)
-                            it.setString(7, i.tekst)
-                            it.setString(8, i.link)
-                            it.setInt(9, i.sikkerhetsnivaa)
-                            it.setObject(10, i.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
-                            it.setBoolean(11, i.aktiv)
-                            it.setObject(12, i.synligFremTil?.toLocalDateTime(), Types.TIMESTAMP)
-                            it.setString(13, i.uid)
-                            it.addBatch()
+                            pStatement.setInt(1, beskjed.id)
+                            pStatement.setString(2, beskjed.produsent)
+                            pStatement.setObject(3, beskjed.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
+                            pStatement.setString(4, beskjed.fodselsnummer)
+                            pStatement.setString(5, beskjed.eventId)
+                            pStatement.setString(6, beskjed.grupperingsId)
+                            pStatement.setString(7, beskjed.tekst)
+                            pStatement.setString(8, beskjed.link)
+                            pStatement.setInt(9, beskjed.sikkerhetsnivaa)
+                            pStatement.setObject(10, beskjed.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
+                            pStatement.setBoolean(11, beskjed.aktiv)
+                            pStatement.setObject(12, beskjed.synligFremTil?.toLocalDateTime(), Types.TIMESTAMP)
+                            pStatement.setString(13, beskjed.uid)
+                            pStatement.addBatch()
                         }
                     }
-                    it.executeBatch()
+                    pStatement.executeBatch()
                 }
 
-fun Connection.deleteBeskjed(beskjed: List<Beskjed>) =
+fun Connection.deleteBeskjed(beskjeder: List<Beskjed>) =
         prepareStatement("""DELETE FROM beskjed WHERE eventId = ?""")
-                .use {
-                    beskjed.forEach { i ->
+                .use { pStatement ->
+                    beskjeder.forEach { beskjed ->
                         run {
-                            it.setString(1, i.eventId)
-                            it.addBatch()
+                            pStatement.setString(1, beskjed.eventId)
+                            pStatement.addBatch()
                         }
                     }
-                    it.executeBatch()
+                    pStatement.executeBatch()
                 }

@@ -3,6 +3,7 @@
   "cluster": "prod",
   "environment": "prod",
   "ingresses": [
-    "https://dittnav-eventer-modia.nais.adeo.no"
+    "https://dittnav-eventer-modia.nais.adeo.no",
+    "https://app.adeo.no/dittnav-eventer-modia"
   ]
 }

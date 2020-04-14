@@ -9,14 +9,14 @@ spec:
   image: {{version}}
   port: 8080
   liveness:
-    path: /isAlive
+    path: /dittnav-eventer-modia/internal/isAlive
     initialDelay: 5
   readiness:
-    path: /isReady
+    path: /dittnav-eventer-modia/internal/isReady
     initialDelay: 5
   prometheus:
     enabled: true
-    path: /metrics
+    path: /dittnav-eventer-modia/internal/metrics
   replicas:
     min: 2
     max: 4

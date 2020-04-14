@@ -11,12 +11,12 @@ import io.ktor.auth.jwt.jwt
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.jackson.jackson
+import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
-import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
 
 @KtorExperimentalAPI
@@ -39,7 +39,9 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     }
 
     routing {
-        healthApi(appContext.database)
+        route("internal") {
+            healthApi(appContext.database)
+        }
         authenticate {
             oppgaveApi(appContext.oppgaveEventService)
             beskjedApi(appContext.beskjedEventService)

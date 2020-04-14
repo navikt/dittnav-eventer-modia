@@ -39,14 +39,12 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     }
 
     routing {
-        route("dittnav-eventer-modia") {
-            route("internal") {
-                healthApi(appContext.database)
-            }
-            authenticate {
-                oppgaveApi(appContext.oppgaveEventService)
-                beskjedApi(appContext.beskjedEventService)
-            }
+        route("internal") {
+            healthApi(appContext.database)
+        }
+        authenticate {
+            oppgaveApi(appContext.oppgaveEventService)
+            beskjedApi(appContext.beskjedEventService)
         }
     }
 

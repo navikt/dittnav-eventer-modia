@@ -1,1 +1,1 @@
-rootProject.name = "event-handler"
+rootProject.name = "eventer-modia"

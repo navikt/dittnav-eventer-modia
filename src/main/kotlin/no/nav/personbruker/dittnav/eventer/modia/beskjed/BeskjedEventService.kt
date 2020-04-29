@@ -11,7 +11,7 @@ class BeskjedEventService(
 ) {
 
     suspend fun getActiveCachedEventsForUser(bruker: User): List<Beskjed> {
-        return database.dbQuery {
+        return database.queryWithExceptionTranslation {
             getAktivBeskjedForInnloggetBruker(bruker)
         }.filter { beskjed -> !beskjed.isExpired() }
     }
@@ -24,7 +24,7 @@ class BeskjedEventService(
     }
 
     suspend fun getAllEventsFromCacheForUser(bruker: User): List<Beskjed> {
-        return database.dbQuery { getAllBeskjedForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAllBeskjedForInnloggetBruker(bruker) }
     }
 
     private fun Beskjed.isExpired() : Boolean = synligFremTil?.isBefore(Instant.now().atZone(ZoneId.of("Europe/Oslo")))?: false

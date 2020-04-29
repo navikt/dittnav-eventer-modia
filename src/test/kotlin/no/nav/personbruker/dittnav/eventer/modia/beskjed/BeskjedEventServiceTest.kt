@@ -21,7 +21,7 @@ class BeskjedEventServiceTest {
         val beskjedList = getBeskjedList()
         runBlocking {
             coEvery {
-                database.dbQuery<List<Beskjed>>(any())
+                database.queryWithExceptionTranslation<List<Beskjed>>(any())
             }.returns(beskjedList)
 
             val actualBeskjeds = beskjedEventService.getAllEventsFromCacheForUser(bruker)
@@ -34,7 +34,7 @@ class BeskjedEventServiceTest {
         val beskjedList = getBeskjedList()
         runBlocking {
             coEvery {
-                database.dbQuery<List<Beskjed>>(any())
+                database.queryWithExceptionTranslation<List<Beskjed>>(any())
             }.returns(beskjedList)
 
             val actualBeskjeds = beskjedEventService.getActiveCachedEventsForUser(bruker)
@@ -49,7 +49,7 @@ class BeskjedEventServiceTest {
         beskjedList.add(BeskjedObjectMother.createBeskjed(4, "4", bruker.fodselsnummer, ZonedDateTime.now().minusDays(1), "123", true))
         runBlocking {
             coEvery {
-                database.dbQuery<List<Beskjed>>(any())
+                database.queryWithExceptionTranslation<List<Beskjed>>(any())
             }.returns(beskjedList)
 
             val actualBeskjeds = beskjedEventService.getInactiveCachedEventsForUser(bruker)

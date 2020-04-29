@@ -6,14 +6,14 @@ import no.nav.personbruker.dittnav.eventer.modia.common.database.Database
 class InnboksEventService(private val database: Database) {
 
     suspend fun getActiveCachedEventsForUser(bruker: User): List<Innboks> {
-        return database.dbQuery { getAktivInnboksForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAktivInnboksForInnloggetBruker(bruker) }
     }
 
     suspend fun getInctiveCachedEventsForUser(bruker: User): List<Innboks> {
-        return database.dbQuery { getAktivInnboksForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAktivInnboksForInnloggetBruker(bruker) }
     }
 
     suspend fun getAllCachedEventsForUser(bruker: User): List<Innboks> {
-        return database.dbQuery { getAllInnboksForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAllInnboksForInnloggetBruker(bruker) }
     }
 }

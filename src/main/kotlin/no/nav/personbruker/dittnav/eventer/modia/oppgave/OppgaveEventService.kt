@@ -8,14 +8,14 @@ class OppgaveEventService(
 ) {
 
     suspend fun getActiveCachedEventsForUser(bruker: User): List<Oppgave> {
-        return database.dbQuery { getAktivOppgaveForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAktivOppgaveForInnloggetBruker(bruker) }
     }
 
     suspend fun getInactiveCachedEventsForUser(bruker: User): List<Oppgave> {
-        return database.dbQuery { getInaktivOppgaveForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getInaktivOppgaveForInnloggetBruker(bruker) }
     }
 
     suspend fun getAllCachedEventsForUser(bruker: User): List<Oppgave> {
-        return database.dbQuery { getAllOppgaveForInnloggetBruker(bruker) }
+        return database.queryWithExceptionTranslation { getAllOppgaveForInnloggetBruker(bruker) }
     }
 }

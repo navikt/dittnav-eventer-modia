@@ -3,6 +3,8 @@ package no.nav.personbruker.dittnav.eventer.modia.oppgave
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
+import no.nav.personbruker.dittnav.eventer.modia.common.database.createProdusent
+import no.nav.personbruker.dittnav.eventer.modia.common.database.deleteProdusent
 import no.nav.personbruker.dittnav.eventhandler.oppgave.createOppgave
 import no.nav.personbruker.dittnav.eventhandler.oppgave.deleteOppgave
 import org.amshove.kluent.`should be equal to`
@@ -24,16 +26,18 @@ class OppgaveQueriesTest {
     private val oppgave4 = OppgaveObjectMother.createOppgave(id = 4, eventId = "789", fodselsnummer = "54321", aktiv = true)
 
     @BeforeAll
-    fun `populer tabellen med Oppgave-eventer`() {
+    fun `populer testdata`() {
         runBlocking {
             database.dbQuery { createOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
+            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
         }
     }
 
     @AfterAll
-    fun `slett Oppgave-eventer fra tabellen`() {
+    fun `slett testdata`() {
         runBlocking {
             database.dbQuery { deleteOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
+            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
         }
     }
 

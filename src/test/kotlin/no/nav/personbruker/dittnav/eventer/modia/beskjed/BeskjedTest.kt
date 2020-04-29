@@ -13,5 +13,6 @@ class BeskjedTest {
         beskjedAsString `should contain` "fodselsnummer=***"
         beskjedAsString `should contain` "tekst=***"
         beskjedAsString `should contain` "link=***"
+        beskjedAsString `should contain` "systembruker=***"
     }
 }

@@ -6,6 +6,7 @@ import java.time.ZonedDateTime
 data class Innboks (
         @JsonIgnore val id: Int,
         val produsent: String,
+        @JsonIgnore val systembruker: String,
         val eventTidspunkt: ZonedDateTime,
         val fodselsnummer: String,
         val eventId: String,
@@ -20,6 +21,7 @@ data class Innboks (
         return "Innboks(" +
                 "id=$id, " +
                 "produsent=$produsent, " +
+                "systembruker=***, " +
                 "eventTidspunkt=$eventTidspunkt, " +
                 "fodselsnummer=***, " +
                 "eventId=$eventId, " +

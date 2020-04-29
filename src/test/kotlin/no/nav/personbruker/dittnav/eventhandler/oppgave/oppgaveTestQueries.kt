@@ -5,12 +5,12 @@ import java.sql.Connection
 import java.sql.Types
 
 fun Connection.createOppgave(oppgaver: List<Oppgave>) =
-        prepareStatement("""INSERT INTO oppgave(id, produsent, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
+        prepareStatement("""INSERT INTO oppgave(id, systembruker, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
                 .use { pStatement ->
                     oppgaver.forEach { oppgave ->
                         pStatement.setInt(1, oppgave.id)
-                        pStatement.setString(2, oppgave.produsent)
+                        pStatement.setString(2, oppgave.systembruker)
                         pStatement.setObject(3, oppgave.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
                         pStatement.setString(4, oppgave.fodselsnummer)
                         pStatement.setString(5, oppgave.eventId)

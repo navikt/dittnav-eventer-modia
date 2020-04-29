@@ -3,6 +3,8 @@ package no.nav.personbruker.dittnav.eventer.modia.innboks
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
+import no.nav.personbruker.dittnav.eventer.modia.common.database.createProdusent
+import no.nav.personbruker.dittnav.eventer.modia.common.database.deleteProdusent
 import no.nav.personbruker.dittnav.eventhandler.innboks.createInnboks
 import no.nav.personbruker.dittnav.eventhandler.innboks.deleteInnboks
 import org.amshove.kluent.`should be empty`
@@ -26,16 +28,18 @@ class InnboksQueriesTest {
     private val innboks4 = InnboksObjectMother.createInnboks(id = 4, eventId = "789", fodselsnummer = "67890", aktiv = false)
 
     @BeforeAll
-    fun `populer tabellen med Innboks-eventer`() {
+    fun `populer testdata`() {
         runBlocking {
             database.dbQuery { createInnboks(listOf(innboks1, innboks2, innboks3, innboks4)) }
+            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
         }
     }
 
     @AfterAll
-    fun `slett Innboks-eventer fra tabellen`() {
+    fun `slett testdata`() {
         runBlocking {
             database.dbQuery { deleteInnboks(listOf(innboks1, innboks2, innboks3, innboks4)) }
+            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
         }
 
     }

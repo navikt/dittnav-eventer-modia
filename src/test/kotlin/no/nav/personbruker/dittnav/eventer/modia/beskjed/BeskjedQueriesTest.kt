@@ -3,6 +3,8 @@ package no.nav.personbruker.dittnav.eventer.modia.beskjed
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
+import no.nav.personbruker.dittnav.eventer.modia.common.database.createProdusent
+import no.nav.personbruker.dittnav.eventer.modia.common.database.deleteProdusent
 import no.nav.personbruker.dittnav.eventhandler.beskjed.createBeskjed
 import no.nav.personbruker.dittnav.eventhandler.beskjed.deleteBeskjed
 import org.amshove.kluent.`should be empty`
@@ -30,16 +32,18 @@ class BeskjedQueriesTest {
             synligFremTil = ZonedDateTime.now().plusHours(1), uid = "44", aktiv = true)
 
     @BeforeAll
-    fun `populer tabellen med Beskjed-eventer`() {
+    fun `populer testdata`() {
         runBlocking {
             database.dbQuery { createBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4)) }
+            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
         }
     }
 
     @AfterAll
-    fun `slett Beskjed-eventer fra tabellen`() {
+    fun `slett testdata`() {
         runBlocking {
             database.dbQuery { deleteBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4)) }
+            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
         }
     }
 

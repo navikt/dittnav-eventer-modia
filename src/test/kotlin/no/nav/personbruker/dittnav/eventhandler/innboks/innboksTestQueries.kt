@@ -5,12 +5,12 @@ import java.sql.Connection
 import java.sql.Types
 
 fun Connection.createInnboks(innbokseventer: List<Innboks>) =
-        prepareStatement("""INSERT INTO innboks(id, produsent, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
+        prepareStatement("""INSERT INTO innboks(id, systembruker, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
                 .use { pStatement ->
                     innbokseventer.forEach { innboks ->
                         pStatement.setInt(1, innboks.id)
-                        pStatement.setString(2, innboks.produsent)
+                        pStatement.setString(2, innboks.systembruker)
                         pStatement.setObject(3, innboks.eventTidspunkt.toLocalDateTime(), Types.TIMESTAMP)
                         pStatement.setString(4, innboks.fodselsnummer)
                         pStatement.setString(5, innboks.eventId)

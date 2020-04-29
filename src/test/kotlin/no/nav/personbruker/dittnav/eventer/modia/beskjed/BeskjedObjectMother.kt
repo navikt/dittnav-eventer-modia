@@ -9,7 +9,8 @@ object BeskjedObjectMother {
                 return Beskjed(
                         uid = uid,
                         id = id,
-                        produsent = "DittNav",
+                        produsent = "dittnav",
+                        systembruker = "x-dittnav",
                         eventTidspunkt = ZonedDateTime.now(ZoneId.of("Europe/Oslo")),
                         fodselsnummer = fodselsnummer,
                         eventId = eventId,

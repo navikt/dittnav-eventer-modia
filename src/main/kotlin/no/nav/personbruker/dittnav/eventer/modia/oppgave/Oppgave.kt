@@ -10,6 +10,7 @@ data class Oppgave(
         val eventId: String,
         val eventTidspunkt: ZonedDateTime,
         val produsent: String,
+        @JsonIgnore val systembruker: String,
         val sikkerhetsnivaa: Int,
         val sistOppdatert: ZonedDateTime,
         val tekst: String,
@@ -24,6 +25,7 @@ data class Oppgave(
                 "eventId=$eventId, " +
                 "eventTidspunkt=$eventTidspunkt, " +
                 "produsent=$produsent, " +
+                "systembruker=***, " +
                 "sikkerhetsnivaa=$sikkerhetsnivaa, " +
                 "sistOppdatert=$sistOppdatert, " +
                 "tekst=***, " +

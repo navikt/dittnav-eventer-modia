@@ -9,12 +9,12 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.getFirstBeskjed
 import no.nav.personbruker.dittnav.eventer.modia.common.database.Database
 import org.slf4j.LoggerFactory
-import java.lang.Exception
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -51,9 +51,9 @@ val log = LoggerFactory.getLogger(BeskjedEventService::class.java)
 var lastDBSchemaCheck = LocalDateTime.now()
 var dbSchemaReady = false
 
-private fun isDBSchemaUpdated(database: Database): Boolean {
+private suspend fun isDBSchemaUpdated(database: Database): Boolean {
     return if(Math.abs(Duration.between(lastDBSchemaCheck, LocalDateTime.now()).toSeconds()) > 20) {
-        runBlocking {
+        withContext(Dispatchers.IO) {
             lastDBSchemaCheck = LocalDateTime.now()
             try {
                 database.dbQuery { getFirstBeskjed() }

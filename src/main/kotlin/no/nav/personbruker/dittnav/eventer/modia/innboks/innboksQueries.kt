@@ -27,7 +27,7 @@ fun Connection.getAllInnboksForInnloggetBruker(bruker: User): List<Innboks> =
             |innboks.aktiv,
             |innboks.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM innboks INNER JOIN systembrukere ON innboks.systembruker = systembrukere.systembruker
+            |FROM innboks LEFT JOIN systembrukere ON innboks.systembruker = systembrukere.systembruker
             |WHERE innboks.fodselsnummer = ?""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
@@ -50,7 +50,7 @@ private fun Connection.getInnboksForInnloggetBruker(bruker: User, aktiv: Boolean
             |innboks.aktiv,
             |innboks.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM innboks INNER JOIN systembrukere ON innboks.systembruker = systembrukere.systembruker
+            |FROM innboks LEFT JOIN systembrukere ON innboks.systembruker = systembrukere.systembruker
             |WHERE fodselsnummer = ? AND aktiv = ?""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
@@ -63,7 +63,7 @@ private fun Connection.getInnboksForInnloggetBruker(bruker: User, aktiv: Boolean
 private fun ResultSet.toInnboks(): Innboks {
     return Innboks(
             id = getInt("id"),
-            produsent = getString("produsent"),
+            produsent = getString("produsent") ?: "",
             systembruker = getString("systembruker"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),

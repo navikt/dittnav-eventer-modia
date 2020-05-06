@@ -1,5 +1,6 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
+import Beskjed
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
@@ -33,18 +34,14 @@ class BeskjedQueriesTest {
 
     @BeforeAll
     fun `populer testdata`() {
-        runBlocking {
-            database.dbQuery { createBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4)) }
-            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
-        }
+        createBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4))
+        createSystembruker(systembruker = "x-dittnav", produsentnavn = "dittnav")
     }
 
     @AfterAll
     fun `slett testdata`() {
-        runBlocking {
-            database.dbQuery { deleteBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4)) }
-            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
-        }
+        deleteBeskjed(listOf(beskjed1, beskjed2, beskjed3, beskjed4))
+        deleteSystembruker(systembruker = "x-dittnav")
     }
 
     @Test
@@ -89,4 +86,68 @@ class BeskjedQueriesTest {
             database.dbQuery { getAktivBeskjedForInnloggetBruker(fodselsnummerMangler) }.`should be empty`()
         }
     }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for aktive eventer`() {
+        runBlocking {
+            val beskjed = database.dbQuery { getAktivBeskjedForInnloggetBruker(bruker) }.first()
+            beskjed.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for inaktive eventer`() {
+        runBlocking {
+            val beskjed = database.dbQuery { getInaktivBeskjedForInnloggetBruker(bruker) }.first()
+            beskjed.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for alle eventer`() {
+        runBlocking {
+            val beskjed = database.dbQuery { getAllBeskjedForInnloggetBruker(bruker) }.first()
+            beskjed.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer tom streng for produsent hvis eventet er produsert av systembruker vi ikke har i systembruker-tabellen`() {
+        var beskjedMedAnnenProdusent = BeskjedObjectMother.createBeskjed(id = 5, eventId = "111", fodselsnummer = "112233",
+                synligFremTil = ZonedDateTime.now().plusHours(1), uid = "11", aktiv = true)
+                .copy(systembruker = "ukjent-systembruker")
+        createBeskjed(listOf(beskjedMedAnnenProdusent))
+        val beskjed = runBlocking {
+            database.dbQuery {
+                getAllBeskjedForInnloggetBruker(InnloggetBrukerObjectMother.createInnloggetBruker("112233"))
+            }.first()
+        }
+        beskjed.produsent `should be equal to` ""
+        deleteBeskjed(listOf(beskjedMedAnnenProdusent))
+    }
+
+    private fun createBeskjed(beskjeder: List<Beskjed>) {
+        runBlocking {
+            database.dbQuery { createBeskjed(beskjeder) }
+        }
+    }
+
+    private fun createSystembruker(systembruker: String, produsentnavn: String) {
+        runBlocking {
+            database.dbQuery { createProdusent(systembruker, produsentnavn) }
+        }
+    }
+
+    private fun deleteBeskjed(beskjeder: List<Beskjed>) {
+        runBlocking {
+            database.dbQuery { deleteBeskjed(beskjeder) }
+        }
+    }
+
+    private fun deleteSystembruker(systembruker: String) {
+        runBlocking {
+            database.dbQuery { deleteProdusent(systembruker) }
+        }
+    }
+
 }

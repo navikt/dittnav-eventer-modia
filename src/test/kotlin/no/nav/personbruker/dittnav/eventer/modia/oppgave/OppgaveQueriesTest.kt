@@ -27,18 +27,14 @@ class OppgaveQueriesTest {
 
     @BeforeAll
     fun `populer testdata`() {
-        runBlocking {
-            database.dbQuery { createOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
-            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
-        }
+        createOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4))
+        createSystembruker(systembruker = "x-dittnav", produsentnavn = "dittnav")
     }
 
     @AfterAll
     fun `slett testdata`() {
-        runBlocking {
-            database.dbQuery { deleteOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
-            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
-        }
+        deleteOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4))
+        deleteSystembruker(systembruker = "x-dittnav")
     }
 
     @Test
@@ -75,6 +71,68 @@ class OppgaveQueriesTest {
         val fodselsnummerMangler = InnloggetBrukerObjectMother.createInnloggetBruker("")
         runBlocking {
             database.dbQuery { getAktivOppgaveForInnloggetBruker(fodselsnummerMangler) }.isEmpty()
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for aktive eventer`() {
+        runBlocking {
+            val oppgave = database.dbQuery { getAktivOppgaveForInnloggetBruker(bruker) }.first()
+            oppgave.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for inaktive eventer`() {
+        runBlocking {
+            val oppgave = database.dbQuery { getInaktivOppgaveForInnloggetBruker(bruker) }.first()
+            oppgave.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for alle eventer`() {
+        runBlocking {
+            val oppgave = database.dbQuery { getAllOppgaveForInnloggetBruker(bruker) }.first()
+            oppgave.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer tom streng for produsent hvis eventet er produsert av systembruker vi ikke har i systembruker-tabellen`() {
+        var oppgaveMedAnnenProdusent = OppgaveObjectMother.createOppgave(id = 5, eventId = "111", fodselsnummer = "112233", aktiv = true)
+                .copy(systembruker = "ukjent-systembruker")
+        createOppgave(listOf(oppgaveMedAnnenProdusent))
+        val oppgave = runBlocking {
+            database.dbQuery {
+                getAllOppgaveForInnloggetBruker(InnloggetBrukerObjectMother.createInnloggetBruker("112233"))
+            }.first()
+        }
+        oppgave.produsent `should be equal to` ""
+        deleteOppgave(listOf(oppgaveMedAnnenProdusent))
+    }
+
+    private fun createOppgave(oppgaver: List<Oppgave>) {
+        runBlocking {
+            database.dbQuery { createOppgave(oppgaver) }
+        }
+    }
+
+    private fun createSystembruker(systembruker: String, produsentnavn: String) {
+        runBlocking {
+            database.dbQuery { createProdusent(systembruker, produsentnavn) }
+        }
+    }
+
+    private fun deleteOppgave(oppgaver: List<Oppgave>) {
+        runBlocking {
+            database.dbQuery { deleteOppgave(oppgaver) }
+        }
+    }
+
+    private fun deleteSystembruker(systembruker: String) {
+        runBlocking {
+            database.dbQuery { deleteProdusent(systembruker) }
         }
     }
 }

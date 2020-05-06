@@ -29,19 +29,14 @@ class InnboksQueriesTest {
 
     @BeforeAll
     fun `populer testdata`() {
-        runBlocking {
-            database.dbQuery { createInnboks(listOf(innboks1, innboks2, innboks3, innboks4)) }
-            database.dbQuery { createProdusent(systembruker = "x-dittnav", produsentnavn = "dittnav") }
-        }
+        createInnboks(listOf(innboks1, innboks2, innboks3, innboks4))
+        createSystembruker(systembruker = "x-dittnav", produsentnavn = "dittnav")
     }
 
     @AfterAll
     fun `slett testdata`() {
-        runBlocking {
-            database.dbQuery { deleteInnboks(listOf(innboks1, innboks2, innboks3, innboks4)) }
-            database.dbQuery { deleteProdusent(systembruker = "x-dittnav") }
-        }
-
+        deleteInnboks(listOf(innboks1, innboks2, innboks3, innboks4))
+        deleteSystembruker(systembruker = "x-dittnav")
     }
 
     @Test
@@ -81,6 +76,68 @@ class InnboksQueriesTest {
         val brukerUtenEventer = InnloggetBrukerObjectMother.createInnloggetBruker("")
         runBlocking {
             database.dbQuery { getAllInnboksForInnloggetBruker(brukerUtenEventer) }.size `should be equal to` 0
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for aktive eventer`() {
+        runBlocking {
+            val innboks = database.dbQuery { getAktivInnboksForInnloggetBruker(bruker1) }.first()
+            innboks.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for inaktive eventer`() {
+        runBlocking {
+            val innboks = database.dbQuery { getInaktivInnboksForInnloggetBruker(bruker2) }.first()
+            innboks.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer lesbart navn for produsent som kan eksponeres for alle eventer`() {
+        runBlocking {
+            val innboks = database.dbQuery { getAllInnboksForInnloggetBruker(bruker1) }.first()
+            innboks.produsent `should be equal to` "dittnav"
+        }
+    }
+
+    @Test
+    fun `Returnerer tom streng for produsent hvis eventet er produsert av systembruker vi ikke har i systembruker-tabellen`() {
+        var innboksMedAnnenProdusent = InnboksObjectMother.createInnboks(id = 5, eventId = "111", fodselsnummer = "112233", aktiv = true)
+                .copy(systembruker = "ukjent-systembruker")
+        createInnboks(listOf(innboksMedAnnenProdusent))
+        val innboks = runBlocking {
+            database.dbQuery {
+                getAllInnboksForInnloggetBruker(InnloggetBrukerObjectMother.createInnloggetBruker("112233"))
+            }.first()
+        }
+        innboks.produsent `should be equal to` ""
+        deleteInnboks(listOf(innboksMedAnnenProdusent))
+    }
+
+    private fun createInnboks(innboks: List<Innboks>) {
+        runBlocking {
+            database.dbQuery { createInnboks(innboks) }
+        }
+    }
+
+    private fun createSystembruker(systembruker: String, produsentnavn: String) {
+        runBlocking {
+            database.dbQuery { createProdusent(systembruker, produsentnavn) }
+        }
+    }
+
+    private fun deleteInnboks(innboks: List<Innboks>) {
+        runBlocking {
+            database.dbQuery { deleteInnboks(innboks) }
+        }
+    }
+
+    private fun deleteSystembruker(systembruker: String) {
+        runBlocking {
+            database.dbQuery { deleteProdusent(systembruker) }
         }
     }
 }

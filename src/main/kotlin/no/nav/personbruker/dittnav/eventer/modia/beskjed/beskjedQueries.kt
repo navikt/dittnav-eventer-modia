@@ -34,7 +34,7 @@ fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
             |beskjed.aktiv,
             |beskjed.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM beskjed INNER JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
+            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
             |WHERE beskjed.fodselsnummer = ?""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
@@ -47,7 +47,7 @@ fun ResultSet.toBeskjed(): Beskjed {
     return Beskjed(
             id = getInt("id"),
             uid = getString("uid"),
-            produsent = getString("produsent"),
+            produsent = getString("produsent") ?: "",
             systembruker = getString("systembruker"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
@@ -78,7 +78,7 @@ private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean
             |beskjed.aktiv,
             |beskjed.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM beskjed INNER JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
+            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
             |WHERE beskjed.fodselsnummer = ? AND beskjed.aktiv = ?""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)

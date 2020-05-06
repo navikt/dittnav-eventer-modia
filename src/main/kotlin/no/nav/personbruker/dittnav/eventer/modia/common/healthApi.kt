@@ -9,14 +9,7 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
-import no.nav.personbruker.dittnav.eventer.modia.beskjed.getFirstBeskjed
 import no.nav.personbruker.dittnav.eventer.modia.common.database.Database
-import org.slf4j.LoggerFactory
-import java.time.Duration
-import java.time.LocalDateTime
 
 fun Route.healthApi(database: Database, collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry) {
 

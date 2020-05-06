@@ -14,30 +14,6 @@ fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> 
 fun Connection.getAktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         getBeskjedForInnloggetBruker(bruker, true)
 
-fun Connection.getFirstBeskjed(): List<Beskjed> =
-        prepareStatement("""SELECT 
-            |beskjed.id, 
-            |beskjed.uid, 
-            |beskjed.eventTidspunkt,
-            |beskjed.fodselsnummer,
-            |beskjed.eventId, 
-            |beskjed.grupperingsId,
-            |beskjed.tekst,
-            |beskjed.link,
-            |beskjed.sikkerhetsnivaa,
-            |beskjed.sistOppdatert,
-            |beskjed.synligFremTil,
-            |beskjed.aktiv,
-            |beskjed.systembruker,
-            |systembrukere.produsentnavn AS produsent
-            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
-            |LIMIT 1""".trimMargin())
-                .use {
-                    it.executeQuery().map {
-                        toBeskjed()
-                    }
-                }
-
 fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
         prepareStatement("""SELECT 
             |beskjed.id, 

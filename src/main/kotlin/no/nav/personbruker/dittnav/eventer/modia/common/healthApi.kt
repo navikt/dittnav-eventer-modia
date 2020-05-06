@@ -27,7 +27,7 @@ fun Route.healthApi(database: Database, collectorRegistry: CollectorRegistry = C
     }
 
     get("/isReady") {
-        if (isDataSourceRunning(database) && isDBSchemaUpdated(database)) {
+        if (isDataSourceRunning(database)) {
             call.respondText(text = "READY", contentType = ContentType.Text.Plain)
 
         } else {
@@ -44,29 +44,6 @@ fun Route.healthApi(database: Database, collectorRegistry: CollectorRegistry = C
         call.respondTextWriter(ContentType.parse(TextFormat.CONTENT_TYPE_004)) {
             TextFormat.write004(this, collectorRegistry.filteredMetricFamilySamples(names))
         }
-    }
-}
-
-val log = LoggerFactory.getLogger(BeskjedEventService::class.java)
-var lastDBSchemaCheck = LocalDateTime.now()
-var dbSchemaReady = false
-
-private suspend fun isDBSchemaUpdated(database: Database): Boolean {
-    return if(Math.abs(Duration.between(lastDBSchemaCheck, LocalDateTime.now()).toSeconds()) > 20) {
-        withContext(Dispatchers.IO) {
-            lastDBSchemaCheck = LocalDateTime.now()
-            try {
-                database.dbQuery { getFirstBeskjed() }
-                log.info("Database-skjema er oppdatert!")
-                dbSchemaReady = true
-                dbSchemaReady
-            } catch (e: Exception) {
-                log.info("Database-skjema er ikke oppdatert, ikke ready")
-                dbSchemaReady;
-            }
-        }
-    } else {
-        dbSchemaReady
     }
 }
 

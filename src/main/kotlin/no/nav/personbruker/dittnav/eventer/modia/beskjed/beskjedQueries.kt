@@ -8,23 +8,56 @@ import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
-        prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
+fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
+        getBeskjedForInnloggetBruker(bruker, false)
+
+fun Connection.getAktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
+        getBeskjedForInnloggetBruker(bruker, true)
+
+fun Connection.getFirstBeskjed(): List<Beskjed> =
+        prepareStatement("""SELECT 
+            |beskjed.id, 
+            |beskjed.uid, 
+            |beskjed.eventTidspunkt,
+            |beskjed.fodselsnummer,
+            |beskjed.eventId, 
+            |beskjed.grupperingsId,
+            |beskjed.tekst,
+            |beskjed.link,
+            |beskjed.sikkerhetsnivaa,
+            |beskjed.sistOppdatert,
+            |beskjed.synligFremTil,
+            |beskjed.aktiv,
+            |beskjed.systembruker,
+            |systembrukere.produsentnavn AS produsent
+            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
+            |LIMIT 1""".trimMargin())
                 .use {
-                    it.setString(1, bruker.fodselsnummer)
                     it.executeQuery().map {
                         toBeskjed()
                     }
                 }
 
-fun Connection.getInaktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
-        getBeskjedForInnloggetBruker(bruker, false)
-
-fun Connection.getAktivBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
-        prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
+fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
+        prepareStatement("""SELECT 
+            |beskjed.id, 
+            |beskjed.uid, 
+            |beskjed.eventTidspunkt,
+            |beskjed.fodselsnummer,
+            |beskjed.eventId, 
+            |beskjed.grupperingsId,
+            |beskjed.tekst,
+            |beskjed.link,
+            |beskjed.sikkerhetsnivaa,
+            |beskjed.sistOppdatert,
+            |beskjed.synligFremTil,
+            |beskjed.aktiv,
+            |beskjed.systembruker,
+            |systembrukere.produsentnavn AS produsent
+            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
+            |WHERE beskjed.fodselsnummer = ?""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
-                    it.setBoolean(2, true)
                     it.executeQuery().map {
                         toBeskjed()
                     }
@@ -34,7 +67,8 @@ fun ResultSet.toBeskjed(): Beskjed {
     return Beskjed(
             id = getInt("id"),
             uid = getString("uid"),
-            produsent = getString("produsent"),
+            produsent = getString("produsent") ?: "",
+            systembruker = getString("systembruker"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
             eventId = getString("eventId"),
@@ -48,16 +82,31 @@ fun ResultSet.toBeskjed(): Beskjed {
     )
 }
 
-private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean): List<Beskjed> {
-    return prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = ?""")
-            .use {
-                it.setString(1, bruker.fodselsnummer)
-                it.setBoolean(2, aktiv)
-                it.executeQuery().map {
-                    toBeskjed()
+private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean): List<Beskjed> =
+        prepareStatement("""SELECT
+            |beskjed.id, 
+            |beskjed.uid, 
+            |beskjed.eventTidspunkt,
+            |beskjed.fodselsnummer,
+            |beskjed.eventId, 
+            |beskjed.grupperingsId,
+            |beskjed.tekst,
+            |beskjed.link,
+            |beskjed.sikkerhetsnivaa,
+            |beskjed.sistOppdatert,
+            |beskjed.synligFremTil,
+            |beskjed.aktiv,
+            |beskjed.systembruker,
+            |systembrukere.produsentnavn AS produsent
+            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
+            |WHERE beskjed.fodselsnummer = ? AND beskjed.aktiv = ?""".trimMargin())
+                .use {
+                    it.setString(1, bruker.fodselsnummer)
+                    it.setBoolean(2, aktiv)
+                    it.executeQuery().map {
+                        toBeskjed()
+                    }
                 }
-            }
-}
 
 private fun ResultSet.getNullableZonedDateTime(label: String) : ZonedDateTime? {
     return getTimestamp(label)?.let { timestamp -> ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.of("Europe/Oslo")) }

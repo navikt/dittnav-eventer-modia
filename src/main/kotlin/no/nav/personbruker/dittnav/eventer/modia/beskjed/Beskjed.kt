@@ -9,6 +9,7 @@ data class Beskjed(
         val eventId: String,
         val eventTidspunkt: ZonedDateTime,
         val produsent: String,
+        @JsonIgnore val systembruker: String,
         val sikkerhetsnivaa: Int,
         val sistOppdatert: ZonedDateTime,
         val synligFremTil: ZonedDateTime?,
@@ -25,6 +26,7 @@ data class Beskjed(
                 "eventId=$eventId, " +
                 "eventTidspunkt=$eventTidspunkt, " +
                 "produsent=$produsent, " +
+                "systembruker=***, " +
                 "sikkerhetsnivaa=$sikkerhetsnivaa, " +
                 "sistOppdatert=$sistOppdatert, " +
                 "synligFremTil=$synligFremTil, " +

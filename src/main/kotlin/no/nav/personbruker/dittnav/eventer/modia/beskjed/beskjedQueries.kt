@@ -30,8 +30,8 @@ fun Connection.getAllBeskjedForInnloggetBruker(bruker: User): List<Beskjed> =
             |beskjed.aktiv,
             |beskjed.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
-            |WHERE beskjed.fodselsnummer = ?""".trimMargin())
+            |FROM (SELECT * FROM beskjed WHERE fodselsnummer = ?) AS beskjed
+            |LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
                     it.executeQuery().map {
@@ -74,8 +74,8 @@ private fun Connection.getBeskjedForInnloggetBruker(bruker: User, aktiv: Boolean
             |beskjed.aktiv,
             |beskjed.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM beskjed LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker
-            |WHERE beskjed.fodselsnummer = ? AND beskjed.aktiv = ?""".trimMargin())
+            |FROM (SELECT * FROM beskjed WHERE fodselsnummer = ? AND aktiv = ?) AS beskjed
+            |LEFT JOIN systembrukere ON beskjed.systembruker = systembrukere.systembruker""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
                     it.setBoolean(2, aktiv)

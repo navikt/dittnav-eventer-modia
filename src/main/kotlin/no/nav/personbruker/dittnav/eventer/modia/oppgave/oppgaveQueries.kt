@@ -27,8 +27,8 @@ fun Connection.getAllOppgaveForInnloggetBruker(bruker: User): List<Oppgave> =
             |oppgave.aktiv,
             |oppgave.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM oppgave LEFT JOIN systembrukere ON oppgave.systembruker = systembrukere.systembruker
-            |WHERE fodselsnummer = ?""".trimMargin())
+            |FROM (SELECT * FROM oppgave WHERE fodselsnummer = ?) AS oppgave
+            |LEFT JOIN systembrukere ON oppgave.systembruker = systembrukere.systembruker""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
                     it.executeQuery().map {
@@ -52,8 +52,8 @@ private fun Connection.getOppgaveForInnloggetBruker(bruker: User, aktiv: Boolean
             |oppgave.aktiv,
             |oppgave.systembruker,
             |systembrukere.produsentnavn AS produsent
-            |FROM oppgave LEFT JOIN systembrukere ON oppgave.systembruker = systembrukere.systembruker
-            |WHERE fodselsnummer = ? AND aktiv = ?""".trimMargin())
+            |FROM (SELECT * FROM oppgave WHERE fodselsnummer = ? AND aktiv = ?) AS oppgave
+            |LEFT JOIN systembrukere ON oppgave.systembruker = systembrukere.systembruker""".trimMargin())
                 .use {
                     it.setString(1, bruker.fodselsnummer)
                     it.setBoolean(2, aktiv)

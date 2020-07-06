@@ -55,11 +55,11 @@ class PostgresDatabase(env: Environment) : Database {
             config.driverClassName = "org.postgresql.Driver"
             config.jdbcUrl = env.dbUrl
             config.minimumIdle = 0
-            config.maxLifetime = 30001
+            config.maxLifetime = 1800000
             config.maximumPoolSize = 3
             config.connectionTimeout = 1000
             config.validationTimeout = 250
-            config.idleTimeout = 10001
+            config.idleTimeout = 30000
             config.isAutoCommit = false
             config.isReadOnly = true
             config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"

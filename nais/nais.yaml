@@ -2,7 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: dittnav-eventer-modia
-  namespace: personbruker
+  namespace: {{namespace}}
   labels:
     team: personbruker
 spec:
@@ -28,7 +28,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /kv/{{cluster}}/fss/dittnav-eventer-modia/personbruker
+      - kvPath: /kv/{{cluster}}/fss/dittnav-eventer-modia/{{namespace}}
         mountPath: /var/run/secrets/nais.io/vault
   resources:
     limits:

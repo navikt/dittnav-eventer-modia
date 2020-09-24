@@ -1,4 +1,5 @@
 {
+  "namespace": "default",
   "cluster": "prod",
   "environment": "prod",
   "ingresses": [

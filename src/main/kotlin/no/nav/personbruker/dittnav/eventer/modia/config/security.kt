@@ -52,6 +52,8 @@ object Security {
     }
 
     private fun isCorrectAudienceSet(credentials: JWTCredential, environment: Environment) =
-            credentials.payload.audience.contains(environment.issoAcceptedAudience)
+        environment.issoAcceptedAudience.any {
+            credentials.payload.audience.contains(it)
+        }
 
 }

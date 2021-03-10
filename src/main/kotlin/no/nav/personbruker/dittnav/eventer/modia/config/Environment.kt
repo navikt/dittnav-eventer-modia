@@ -10,7 +10,9 @@ data class Environment(val dbHost: String = getEnvVar("DB_HOST"),
                        val dbMountPath: String = getEnvVar("DB_MOUNT_PATH"),
                        val issoJwksUrl: URL = URL(getEnvVar("ISSO_JWKS_URL")),
                        val issoIssuer: String = getEnvVar("ISSO_ISSUER"),
-                       val issoAcceptedAudience: String = getEnvVar("ISSO_ACCEPTED_AUDIENCE")
+                       val issoAcceptedAudience: List<String> = getEnvVar("ISSO_ACCEPTED_AUDIENCE")
+                           .split(",")
+                           .map(String::trim)
 )
 
 fun getEnvVar(varName: String): String {

@@ -4,7 +4,6 @@
   "environment": "prod",
   "ingresses": [
     "https://dittnav-eventer-modia.nais.adeo.no",
-    "https://app.adeo.no/dittnav-eventer-modia",
-    "https://modia.adeo.no/dittnav-eventer-modia"
+    "https://app.adeo.no/dittnav-eventer-modia"
   ]
 }

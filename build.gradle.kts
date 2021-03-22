@@ -2,9 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
-    val kotlinVersion = "1.3.50"
-    kotlin("jvm").version(kotlinVersion)
-    kotlin("plugin.allopen").version(kotlinVersion)
+    kotlin("jvm").version(Kotlin.version)
+    kotlin("plugin.allopen").version(Kotlin.version)
 
     id(Shadow.pluginId) version Shadow.version
 
@@ -13,7 +12,7 @@ plugins {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "13"
 }
 
 repositories {
@@ -23,7 +22,6 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     implementation(Hikari.cp)
     implementation(Jackson.dataTypeJsr310)
     implementation(Ktor.auth)
@@ -39,7 +37,6 @@ dependencies {
     implementation(Prometheus.common)
     implementation(Prometheus.logback)
     implementation(Prometheus.httpServer)
-    testImplementation(kotlin("test-junit5"))
     testImplementation(Bouncycastle.bcprovJdk15on)
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)
@@ -52,13 +49,13 @@ dependencies {
 }
 
 application {
-    mainClassName = "io.ktor.server.netty.EngineMain"
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 tasks {
     withType<Jar> {
         manifest {
-            attributes["Main-Class"] = application.mainClassName
+            attributes["Main-Class"] = application.mainClass.get()
         }
     }
 
@@ -80,9 +77,12 @@ tasks {
         environment("DB_PASSWORD", "testpassword")
         environment("DB_MOUNT_PATH", "notUsedOnLocalhost")
 
-        main = application.mainClassName
+        main = application.mainClass.get()
         classpath = sourceSets["main"].runtimeClasspath
     }
 }
 
+// TODO: Fjern følgende work around i ny versjon av Shadow-pluginet:
+// Skal være løst i denne: https://github.com/johnrengelman/shadow/pull/612
+project.setProperty("mainClassName", application.mainClass.get())
 apply(plugin = Shadow.pluginId)

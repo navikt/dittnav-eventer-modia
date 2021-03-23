@@ -1,6 +1,5 @@
-package no.nav.personbruker.dittnav.eventhandler.beskjed
+package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import Beskjed
 import java.sql.Connection
 import java.sql.Types
 

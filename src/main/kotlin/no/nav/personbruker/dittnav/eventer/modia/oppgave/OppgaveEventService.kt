@@ -11,16 +11,19 @@ class OppgaveEventService(
 
     private val log = LoggerFactory.getLogger(OppgaveEventService::class.java)
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<Oppgave> {
+    suspend fun getActiveCachedEventsForUser(bruker: User): List<OppgaveDTO> {
         return getEvents { getAktivOppgaveForInnloggetBruker(bruker) }
+            .map { oppgave -> oppgave.toDTO() }
     }
 
-    suspend fun getInactiveCachedEventsForUser(bruker: User): List<Oppgave> {
+    suspend fun getInactiveCachedEventsForUser(bruker: User): List<OppgaveDTO> {
         return getEvents { getInaktivOppgaveForInnloggetBruker(bruker) }
+            .map { oppgave -> oppgave.toDTO() }
     }
 
-    suspend fun getAllCachedEventsForUser(bruker: User): List<Oppgave> {
+    suspend fun getAllCachedEventsForUser(bruker: User): List<OppgaveDTO> {
         return getEvents { getAllOppgaveForInnloggetBruker(bruker) }
+            .map { oppgave -> oppgave.toDTO() }
     }
 
     private suspend fun getEvents(operationToExecute: Connection.() -> List<Oppgave>): List<Oppgave> {

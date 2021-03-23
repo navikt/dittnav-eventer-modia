@@ -1,6 +1,5 @@
-package no.nav.personbruker.dittnav.eventhandler.oppgave
+package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
-import no.nav.personbruker.dittnav.eventer.modia.oppgave.Oppgave
 import java.sql.Connection
 import java.sql.Types
 

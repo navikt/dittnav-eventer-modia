@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import Beskjed
 import no.nav.personbruker.dittnav.eventer.modia.common.User
 import no.nav.personbruker.dittnav.eventer.modia.common.database.map
 import java.sql.Connection

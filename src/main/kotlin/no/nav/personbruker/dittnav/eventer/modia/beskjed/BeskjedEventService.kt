@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import Beskjed
 import no.nav.personbruker.dittnav.eventer.modia.common.User
 import no.nav.personbruker.dittnav.eventer.modia.common.database.Database
 import org.slf4j.LoggerFactory
@@ -14,19 +13,25 @@ class BeskjedEventService(
 
     private val log = LoggerFactory.getLogger(BeskjedEventService::class.java)
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<Beskjed> {
-        return getEvents { getAktivBeskjedForInnloggetBruker(bruker)
-        }.filter { beskjed -> !beskjed.isExpired() }
+    suspend fun getActiveCachedEventsForUser(bruker: User): List<BeskjedDTO> {
+        return getEvents { getAktivBeskjedForInnloggetBruker(bruker) }
+            .filter { beskjed -> !beskjed.isExpired() }
+            .map { beskjed -> beskjed.toDTO() }
     }
 
-    suspend fun getInactiveCachedEventsForUser(bruker: User): List<Beskjed> {
+    suspend fun getInactiveCachedEventsForUser(bruker: User): List<BeskjedDTO> {
         val all = getAllEventsFromCacheForUser(bruker)
-        val inactive = all.filter { beskjed -> !beskjed.aktiv }
-        val expired = all.filter { beskjed -> beskjed.isExpired() }
+        val inactive = all.filter { beskjed -> !beskjed.aktiv }.map { beskjed -> beskjed.toDTO() }
+        val expired = all.filter { beskjed -> beskjed.isExpired() }.map { beskjed -> beskjed.toDTO() }
         return inactive + expired
     }
 
-    suspend fun getAllEventsFromCacheForUser(bruker: User): List<Beskjed> {
+    suspend fun getAllCachedEventsForUser(bruker: User): List<BeskjedDTO> {
+        return getAllEventsFromCacheForUser(bruker)
+            .map { beskjed -> beskjed.toDTO() }
+    }
+
+    private suspend fun getAllEventsFromCacheForUser(bruker: User): List<Beskjed> {
         return getEvents { getAllBeskjedForInnloggetBruker(bruker) }
     }
 

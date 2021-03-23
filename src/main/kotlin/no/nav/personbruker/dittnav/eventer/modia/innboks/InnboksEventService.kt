@@ -9,16 +9,19 @@ class InnboksEventService(private val database: Database) {
 
     private val log = LoggerFactory.getLogger(InnboksEventService::class.java)
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<Innboks> {
+    suspend fun getActiveCachedEventsForUser(bruker: User): List<InnboksDTO> {
         return getEvents { getAktivInnboksForInnloggetBruker(bruker) }
+            .map { innboks -> innboks.toDTO() }
     }
 
-    suspend fun getInctiveCachedEventsForUser(bruker: User): List<Innboks> {
-        return getEvents { getAktivInnboksForInnloggetBruker(bruker) }
+    suspend fun getInctiveCachedEventsForUser(bruker: User): List<InnboksDTO> {
+        return getEvents { getInaktivInnboksForInnloggetBruker(bruker) }
+            .map { innboks -> innboks.toDTO() }
     }
 
-    suspend fun getAllCachedEventsForUser(bruker: User): List<Innboks> {
+    suspend fun getAllCachedEventsForUser(bruker: User): List<InnboksDTO> {
         return getEvents { getAllInnboksForInnloggetBruker(bruker) }
+            .map { innboks -> innboks.toDTO() }
     }
 
     private suspend fun getEvents(operationToExecute: Connection.() -> List<Innboks>): List<Innboks> {

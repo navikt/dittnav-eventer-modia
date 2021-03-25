@@ -1,6 +1,5 @@
-package no.nav.personbruker.dittnav.eventhandler.innboks
+package no.nav.personbruker.dittnav.eventer.modia.innboks
 
-import no.nav.personbruker.dittnav.eventer.modia.innboks.Innboks
 import java.sql.Connection
 import java.sql.Types
 

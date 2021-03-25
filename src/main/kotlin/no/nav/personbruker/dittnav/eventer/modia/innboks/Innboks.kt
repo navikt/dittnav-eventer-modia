@@ -1,12 +1,11 @@
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.ZonedDateTime
 
 data class Innboks (
-        @JsonIgnore val id: Int,
+        val id: Int,
         val produsent: String,
-        @JsonIgnore val systembruker: String,
+        val systembruker: String,
         val eventTidspunkt: ZonedDateTime,
         val fodselsnummer: String,
         val eventId: String,

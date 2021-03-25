@@ -40,7 +40,7 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
     get("/fetch/beskjed/all") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val beskjedEvents = beskjedEventService.getAllEventsFromCacheForUser(userToFetchEventsFor)
+                val beskjedEvents = beskjedEventService.getAllCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, beskjedEvents)
 
             } catch (exception: Exception) {

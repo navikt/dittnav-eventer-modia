@@ -1,19 +1,12 @@
 package no.nav.personbruker.dittnav.eventer.modia.config
 
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.ktor.application.Application
-import io.ktor.application.ApplicationStopPreparing
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.authenticate
-import io.ktor.auth.jwt.jwt
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.jackson.jackson
-import io.ktor.routing.route
-import io.ktor.routing.routing
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.util.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
@@ -25,11 +18,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     install(DefaultHeaders)
 
     install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
-            registerModule(JavaTimeModule())
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        }
+        json()
     }
 
     install(Authentication) {

@@ -9,9 +9,8 @@ internal class UserTest {
     @Test
     fun `should return expected values`() {
         val expectedIdent = "12345"
-        val expectedInnloggingsnivaa = 4
 
-        val userToFetchEventsFor = InnloggetBrukerObjectMother.createInnloggetBruker(expectedIdent, expectedInnloggingsnivaa)
+        val userToFetchEventsFor = InnloggetBrukerObjectMother.createInnloggetBruker(expectedIdent)
 
         userToFetchEventsFor.fodselsnummer `should be equal to` expectedIdent
     }

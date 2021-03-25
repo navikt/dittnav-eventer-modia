@@ -1,15 +1,16 @@
-import com.fasterxml.jackson.annotation.JsonIgnore
+package no.nav.personbruker.dittnav.eventer.modia.beskjed
+
 import java.time.ZonedDateTime
 
 data class Beskjed(
-        @JsonIgnore val id: Int,
+        val id: Int,
         val uid: String,
         val fodselsnummer: String,
         val grupperingsId: String,
         val eventId: String,
         val eventTidspunkt: ZonedDateTime,
         val produsent: String,
-        @JsonIgnore val systembruker: String,
+        val systembruker: String,
         val sikkerhetsnivaa: Int,
         val sistOppdatert: ZonedDateTime,
         val synligFremTil: ZonedDateTime?,

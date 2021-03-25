@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import Beskjed
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
@@ -47,7 +46,7 @@ class BeskjedEventServiceTest {
                 database.queryWithExceptionTranslation<List<Beskjed>>(any())
             }.returns(beskjedList)
 
-            val actualBeskjeds = beskjedEventService.getAllEventsFromCacheForUser(bruker)
+            val actualBeskjeds = beskjedEventService.getAllCachedEventsForUser(bruker)
             actualBeskjeds.size `should be equal to` beskjedList.size
         }
     }

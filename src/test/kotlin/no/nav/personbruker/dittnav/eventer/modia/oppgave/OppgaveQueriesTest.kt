@@ -5,8 +5,6 @@ import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMot
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
 import no.nav.personbruker.dittnav.eventer.modia.common.database.createProdusent
 import no.nav.personbruker.dittnav.eventer.modia.common.database.deleteProdusent
-import no.nav.personbruker.dittnav.eventhandler.oppgave.createOppgave
-import no.nav.personbruker.dittnav.eventhandler.oppgave.deleteOppgave
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll

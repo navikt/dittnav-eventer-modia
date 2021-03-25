@@ -1,13 +1,10 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import Beskjed
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventer.modia.common.database.H2Database
 import no.nav.personbruker.dittnav.eventer.modia.common.database.createProdusent
 import no.nav.personbruker.dittnav.eventer.modia.common.database.deleteProdusent
-import no.nav.personbruker.dittnav.eventhandler.beskjed.createBeskjed
-import no.nav.personbruker.dittnav.eventhandler.beskjed.deleteBeskjed
 import org.amshove.kluent.`should be empty`
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.AfterAll

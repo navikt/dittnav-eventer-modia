@@ -10,6 +10,7 @@ import io.ktor.util.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
+import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
 
 @KtorExperimentalAPI
@@ -34,6 +35,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         authenticate {
             oppgaveApi(appContext.oppgaveEventService)
             beskjedApi(appContext.beskjedEventService)
+            innboksApi(appContext.innboksEventService)
         }
     }
 

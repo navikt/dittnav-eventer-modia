@@ -12,5 +12,4 @@ class ApplicationContext {
     val beskjedEventService = BeskjedEventService(database)
     val oppgaveEventService = OppgaveEventService(database)
     val innboksEventService = InnboksEventService(database)
-
 }

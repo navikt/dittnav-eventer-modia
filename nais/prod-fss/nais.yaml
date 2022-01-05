@@ -24,15 +24,12 @@ spec:
   ingresses:
     - "https://dittnav-eventer-modia.nais.adeo.no"
     - "https://app.adeo.no/dittnav-eventer-modia"
-vault:
-  enabled: true
-  paths:
-    - kvPath: /kv/prod/fss/dittnav-eventer-modia/personbruker
-      mountPath: /var/run/secrets/nais.io/vault
-resources:
-  limits:
-    cpu: "3"
-    memory: 768Mi
-  requests:
-    cpu: "50m"
-    memory: 384Mi
+  vault:
+    enabled: true
+  resources:
+    limits:
+      cpu: "3"
+      memory: 768Mi
+    requests:
+      cpu: "50m"
+      memory: 384Mi

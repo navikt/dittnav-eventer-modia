@@ -2,7 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: dittnav-eventer-modia
-  namespace: {{namespace}}
+  namespace: personbruker
   labels:
     team: personbruker
 spec:
@@ -22,18 +22,17 @@ spec:
     max: 4
   webproxy: true
   ingresses:
-{{#each ingresses}}
-  - "{{this}}"
-{{/each}}
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /kv/{{cluster}}/fss/dittnav-eventer-modia/{{namespace}}
-        mountPath: /var/run/secrets/nais.io/vault
-  resources:
-    limits:
-      cpu: "3"
-      memory: 768Mi
-    requests:
-      cpu: "500m"
-      memory: 384Mi
+    - "https://dittnav-eventer-modia.nais.adeo.no"
+    - "https://app.adeo.no/dittnav-eventer-modia"
+vault:
+  enabled: true
+  paths:
+    - kvPath: /kv/prod/fss/dittnav-eventer-modia/personbruker
+      mountPath: /var/run/secrets/nais.io/vault
+resources:
+  limits:
+    cpu: "3"
+    memory: 768Mi
+  requests:
+    cpu: "500m"
+    memory: 384Mi

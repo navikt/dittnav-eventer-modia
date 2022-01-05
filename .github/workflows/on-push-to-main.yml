@@ -50,32 +50,30 @@ jobs:
           git tag $TAG
           git push origin $TAG
 
-      - name: Sjekk om prodsetting er mulig
-        run: echo "PROD_SBS_VARS_TEMPLATE_DEFINED=$([[ -f ./nais/prod-sbs/default.json ]] && echo 'true' || echo 'false')" >> $GITHUB_ENV
+      - name: Sjekk om prodsetting til fss er mulig
+        run: echo "PROD_FSS_VARS_TEMPLATE_DEFINED=$([[ -f ./nais/prod-fss/nais.yaml ]] && echo 'true' || echo 'false')" >> $GITHUB_ENV
 
-      - name: 'Deploy-er til default i prod-sbs'
-        if: env.PROD_SBS_VARS_TEMPLATE_DEFINED == 'true'
+      - name: 'Deploy-er til personbruker i prod-fss'
+        if: env.PROD_FSS_VARS_TEMPLATE_DEFINED == 'true'
         uses: 'nais/deploy/actions/deploy@v1'
         env:
           REF: ${{ github.sha }}
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-sbs
-          RESOURCE: ./nais/nais.yaml
-          VARS: ./nais/prod-sbs/default.json
+          CLUSTER: prod-fss
+          RESOURCE: ./nais/prod-fss/nais.yaml
           VAR: version=${{ env.IMAGE }}
           PRINT_PAYLOAD: true
 
-      - name: Sjekk om deploy til personbruker i dev er mulig
-        run: echo "DEV_SBS_PERSONBRUKER_CONFIG_DEFINED=$([[ -f ./nais/dev-sbs/personbruker.json ]] && echo 'true' || echo 'false')" >> $GITHUB_ENV
+      - name: Sjekk om deploy til fss i dev er mulig
+        run: echo "DEV_FSS_PERSONBRUKER_CONFIG_DEFINED=$([[ -f ./nais/dev-fss/nais.yaml ]] && echo 'true' || echo 'false')" >> $GITHUB_ENV
 
-      - name: 'Deploy-er til personbruker i dev-sbs'
-        if: env.DEV_SBS_PERSONBRUKER_CONFIG_DEFINED == 'true'
+      - name: 'Deploy-er til personbruker i dev-fss'
+        if: env.DEV_FSS_PERSONBRUKER_CONFIG_DEFINED == 'true'
         uses: 'nais/deploy/actions/deploy@v1'
         env:
           REF: ${{ github.sha }}
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-sbs
-          RESOURCE: ./nais/nais.yaml
-          VARS: ./nais/dev-sbs/personbruker.json
+          CLUSTER: dev-fss
+          RESOURCE: ./nais/dev-fss/nais.yaml
           VAR: version=${{ env.IMAGE }}
           PRINT_PAYLOAD: true

@@ -37,5 +37,5 @@ resources:
     cpu: "3"
     memory: 768Mi
   requests:
-    cpu: "500m"
+    cpu: "50m"
     memory: 384Mi

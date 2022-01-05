@@ -30,7 +30,7 @@ spec:
 vault:
   enabled: true
   paths:
-    - kvPath: /kv/preprod/fss/dittnav-eventer-modia/personbruker
+    - kvPath: /kv/preprod/fss/dittnav-eventer-modia/personbruker-eksistererikke
       mountPath: /var/run/secrets/nais.io/vault
 resources:
   limits:

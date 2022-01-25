@@ -17,7 +17,7 @@ tasks.withType<KotlinCompile> {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven("https://packages.confluent.io/maven")
     mavenLocal()
 }

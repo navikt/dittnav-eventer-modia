@@ -29,6 +29,12 @@ spec:
   azure:
     application:
       enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: dittnav-event-handler
+          namespace: min-side
+          cluster: prod-gcp
   resources:
     limits:
       cpu: "3"

@@ -18,6 +18,7 @@ tasks.withType<KotlinCompile> {
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
     maven("https://packages.confluent.io/maven")
     mavenLocal()
 }
@@ -26,6 +27,10 @@ dependencies {
     implementation(Hikari.cp)
     implementation(Ktor.auth)
     implementation(Ktor.authJwt)
+    implementation(Ktor.clientApache)
+    implementation(Ktor.clientJackson)
+    implementation(Ktor.clientJson)
+    implementation(Ktor.clientSerializationJvm)
     implementation(Ktor.serialization)
     implementation(Ktor.serverNetty)
     implementation(Logback.classic)
@@ -37,6 +42,7 @@ dependencies {
     implementation(Prometheus.common)
     implementation(Prometheus.logback)
     implementation(Prometheus.httpServer)
+    implementation(Tms.KtorTokenSupport.azureExchange)
     testImplementation(Bouncycastle.bcprovJdk15on)
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)

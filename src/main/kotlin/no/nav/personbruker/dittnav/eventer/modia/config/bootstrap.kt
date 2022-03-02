@@ -33,7 +33,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
 
     routing {
         route("internal") {
-            healthApi(appContext.database)
+            healthApi()
         }
         authenticate {
             oppgaveApi(appContext.oppgaveEventService)
@@ -41,16 +41,4 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
             innboksApi(appContext.innboksEventService)
         }
     }
-
-    configureShutdownHook(appContext)
-}
-
-private fun Application.configureShutdownHook(appContext: ApplicationContext) {
-    environment.monitor.subscribe(ApplicationStopPreparing) {
-        closeTheDatabaseConectionPool(appContext)
-    }
-}
-
-private fun closeTheDatabaseConectionPool(appContext: ApplicationContext) {
-    appContext.database.dataSource.close()
 }

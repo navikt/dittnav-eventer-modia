@@ -4,11 +4,9 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 object InnboksObjectMother {
-    fun createInnboks(id: Int, eventId: String, fodselsnummer: String, aktiv: Boolean): Innboks {
+    fun createInnboks(eventId: String, fodselsnummer: String, aktiv: Boolean): Innboks {
         return Innboks(
-                id = id,
                 produsent = "dittnav",
-                systembruker = "x-dittnav",
                 eventTidspunkt = ZonedDateTime.now(ZoneId.of("Europe/Oslo")),
                 fodselsnummer = fodselsnummer,
                 eventId = eventId,

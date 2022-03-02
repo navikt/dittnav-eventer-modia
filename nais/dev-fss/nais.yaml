@@ -29,6 +29,8 @@ spec:
     - "https://app-q6.adeo.no/dittnav-eventer-modia"
   vault:
     enabled: true
+  azure:
+    enabled: true
   resources:
     limits:
       cpu: "3"

@@ -1,34 +1,21 @@
+@file:UseSerializers(ZonedDateTimeSerializer::class)
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
+import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTimeSerializer
 import java.time.ZonedDateTime
 
-data class Innboks (
-        val id: Int,
-        val produsent: String,
-        val systembruker: String,
-        val eventTidspunkt: ZonedDateTime,
-        val fodselsnummer: String,
-        val eventId: String,
-        val grupperingsId: String,
-        val tekst: String,
-        val link: String,
-        val sikkerhetsnivaa: Int,
-        val sistOppdatert: ZonedDateTime,
-        val aktiv: Boolean
-) {
-    override fun toString(): String {
-        return "Innboks(" +
-                "id=$id, " +
-                "produsent=$produsent, " +
-                "systembruker=***, " +
-                "eventTidspunkt=$eventTidspunkt, " +
-                "fodselsnummer=***, " +
-                "eventId=$eventId, " +
-                "grupperingsId=$grupperingsId, " +
-                "tekst=***, " +
-                "link=***, " +
-                "sikkerhetsnivaa=$sikkerhetsnivaa, " +
-                "sistOppdatert=$sistOppdatert, " +
-                "aktiv=$aktiv"
-    }
-}
+@Serializable
+data class Innboks(
+    val produsent: String,
+    val eventTidspunkt: ZonedDateTime,
+    val fodselsnummer: String,
+    val eventId: String,
+    val grupperingsId: String,
+    val tekst: String,
+    val link: String,
+    val sikkerhetsnivaa: Int,
+    val sistOppdatert: ZonedDateTime,
+    val aktiv: Boolean
+)

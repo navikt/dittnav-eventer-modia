@@ -27,7 +27,8 @@ spec:
   vault:
     enabled: true
   azure:
-    enabled: true
+    application:
+      enabled: true
   resources:
     limits:
       cpu: "3"

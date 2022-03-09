@@ -2,12 +2,12 @@ package no.nav.personbruker.dittnav.eventer.modia.common
 
 import org.apache.http.ConnectionClosedException
 
-inline fun <reified T> retryOnConnectionLost(retry: Int = 3, outgoingCall: () -> T): T {
+inline fun <reified T> retryOnConnectionLost(retries: Int = 3, outgoingCall: () -> T): T {
     var attempts = 0
 
     lateinit var lastError: Exception
 
-    while (attempts < retry) {
+    while (attempts < retries) {
         try {
             return outgoingCall()
         } catch (e: ConnectionClosedException) {

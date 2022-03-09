@@ -1,38 +1,23 @@
+@file:UseSerializers(ZonedDateTimeSerializer::class)
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
+import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTimeSerializer
 import java.time.ZonedDateTime
 
+@Serializable
 data class Beskjed(
-        val id: Int,
-        val uid: String,
-        val fodselsnummer: String,
-        val grupperingsId: String,
-        val eventId: String,
-        val eventTidspunkt: ZonedDateTime,
-        val produsent: String,
-        val systembruker: String,
-        val sikkerhetsnivaa: Int,
-        val sistOppdatert: ZonedDateTime,
-        val synligFremTil: ZonedDateTime?,
-        val tekst: String,
-        val link: String,
-        val aktiv: Boolean
-) {
-    override fun toString(): String {
-        return "Beskjed(" +
-                "id=$id, " +
-                "uid=$uid, " +
-                "fodselsnummer=***, " +
-                "grupperingsId=$grupperingsId, " +
-                "eventId=$eventId, " +
-                "eventTidspunkt=$eventTidspunkt, " +
-                "produsent=$produsent, " +
-                "systembruker=***, " +
-                "sikkerhetsnivaa=$sikkerhetsnivaa, " +
-                "sistOppdatert=$sistOppdatert, " +
-                "synligFremTil=$synligFremTil, " +
-                "tekst=***, " +
-                "link=***, " +
-                "aktiv=$aktiv"
-    }
-}
+    val uid: String,
+    val fodselsnummer: String,
+    val grupperingsId: String,
+    val eventId: String,
+    val eventTidspunkt: ZonedDateTime,
+    val produsent: String,
+    val sikkerhetsnivaa: Int,
+    val sistOppdatert: ZonedDateTime,
+    val synligFremTil: ZonedDateTime? = null,
+    val tekst: String,
+    val link: String,
+    val aktiv: Boolean
+)

@@ -1,54 +1,93 @@
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
-import ch.qos.logback.classic.Logger
-import ch.qos.logback.classic.spi.ILoggingEvent
-import ch.qos.logback.core.read.ListAppender
+import io.mockk.clearMocks
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
+import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
-import no.nav.personbruker.dittnav.eventer.modia.common.database.Database
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should contain`
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.slf4j.LoggerFactory
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InnboksEventServiceTest {
 
-    private val database = mockk<Database>()
-    private val innboksEventService = InnboksEventService(database)
+    private val innboksConsumer: InnboksConsumer = mockk()
+    private val tokenFetcher: AzureTokenFetcher = mockk()
+
+    private val innboksEventService = InnboksEventService(innboksConsumer, tokenFetcher)
     private val bruker = InnloggetBrukerObjectMother.createInnloggetBruker("123")
 
-    private val appender: ListAppender<ILoggingEvent> = ListAppender()
-    private val logger: Logger = LoggerFactory.getLogger(InnboksEventService::class.java) as Logger
+    private val azureToken = AzureToken("tokenValue")
 
-    @BeforeAll
-    fun `setup`() {
-        appender.start()
-        logger.addAppender(appender)
-    }
+    private val mockedEvents: List<Innboks> = mockk()
 
-    @AfterAll
-    fun `teardown`() {
-        logger.detachAppender(appender)
+    @AfterEach
+    fun cleanUp() {
+        clearMocks(innboksConsumer, tokenFetcher)
     }
 
     @Test
-    fun `Should log warning if producer is empty`() {
-        val innboksListWithEmptyProducer = listOf(
-                InnboksObjectMother.createInnboks(id = 1, eventId = "123", fodselsnummer = "12345", aktiv = true).copy(produsent = ""))
-        runBlocking {
-            coEvery {
-                database.queryWithExceptionTranslation<List<Innboks>>(any())
-            }.returns(innboksListWithEmptyProducer)
+    fun `should request an azure token and make request on behalf of user for active innboks events`() {
+        coEvery {
+            tokenFetcher.fetchTokenForEventHandler()
+        } returns azureToken
+
+        coEvery {
+            innboksConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
+        } returns mockedEvents
+
+        val result = runBlocking {
             innboksEventService.getActiveCachedEventsForUser(bruker)
         }
-        val logevent = appender.list.first()
-        logevent.level.levelStr `should be equal to` "WARN"
-        logevent.formattedMessage `should contain` "produsent"
+
+        result `should be equal to` mockedEvents
+
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { innboksConsumer.getActiveEvents(azureToken, bruker.fodselsnummer) }
+    }
+
+    @Test
+    fun `should request an azure token and make request on behalf of user for inactive innboks events`() {
+        coEvery {
+            tokenFetcher.fetchTokenForEventHandler()
+        } returns azureToken
+
+        coEvery {
+            innboksConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
+        } returns mockedEvents
+
+        val result = runBlocking {
+            innboksEventService.getInactiveCachedEventsForUser(bruker)
+        }
+
+        result `should be equal to` mockedEvents
+
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { innboksConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer) }
+    }
+
+    @Test
+    fun `should request an azure token and make request on behalf of user for all innboks events`() {
+        coEvery {
+            tokenFetcher.fetchTokenForEventHandler()
+        } returns azureToken
+
+        coEvery {
+            innboksConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
+        } returns mockedEvents
+
+        val result = runBlocking {
+            innboksEventService.getAllCachedEventsForUser(bruker)
+        }
+
+        result `should be equal to` mockedEvents
+
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { innboksConsumer.getAllEvents(azureToken, bruker.fodselsnummer) }
     }
 }

@@ -1,6 +1,7 @@
 package no.nav.personbruker.dittnav.eventer.modia.common
 
 import org.apache.http.ConnectionClosedException
+import java.net.SocketException
 
 inline fun <reified T> retryOnConnectionLost(retries: Int = 3, outgoingCall: () -> T): T {
     var attempts = 0
@@ -11,6 +12,9 @@ inline fun <reified T> retryOnConnectionLost(retries: Int = 3, outgoingCall: () 
         try {
             return outgoingCall()
         } catch (e: ConnectionClosedException) {
+            attempts++
+            lastError = e
+        } catch (e: SocketException) {
             attempts++
             lastError = e
         }

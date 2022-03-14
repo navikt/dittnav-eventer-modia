@@ -9,6 +9,7 @@ import org.amshove.kluent.shouldThrow
 import org.apache.http.ConnectionClosedException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.net.SocketException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RetryOnConnectionLostKtTest {
@@ -38,7 +39,7 @@ internal class RetryOnConnectionLostKtTest {
 
         every {
             resourceCall.invoke()
-        } throws ConnectionClosedException("") andThenThrows ConnectionClosedException("") andThen resourceValue
+        } throws ConnectionClosedException("") andThenThrows SocketException("") andThen resourceValue
 
         runBlocking {
             coInvoking {

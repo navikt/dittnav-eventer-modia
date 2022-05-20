@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventer.modia.config
 
-import io.ktor.client.features.json.serializer.*
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedConsumer
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher

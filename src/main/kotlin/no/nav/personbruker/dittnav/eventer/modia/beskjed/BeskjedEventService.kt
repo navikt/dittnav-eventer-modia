@@ -2,10 +2,6 @@ package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
 import no.nav.personbruker.dittnav.eventer.modia.common.User
-import org.slf4j.LoggerFactory
-import java.sql.Connection
-import java.time.Instant
-import java.time.ZoneId
 
 class BeskjedEventService(
     private val beskjedConsumer: BeskjedConsumer,

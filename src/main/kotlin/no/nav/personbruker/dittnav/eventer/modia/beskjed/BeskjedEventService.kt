@@ -8,21 +8,27 @@ class BeskjedEventService(
     private val azureTokenFetcher: AzureTokenFetcher
 ) {
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<Beskjed> {
+    suspend fun getActiveCachedEventsForUser(bruker: User): List<BeskjedDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        return beskjedConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
+        val beskjedList = beskjedConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
+
+        return BeskjedTransformer.toBeskjedDTO(beskjedList)
     }
 
-    suspend fun getInactiveCachedEventsForUser(bruker: User): List<Beskjed> {
+    suspend fun getInactiveCachedEventsForUser(bruker: User): List<BeskjedDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        return beskjedConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
+        val beskjedList = beskjedConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
+
+        return BeskjedTransformer.toBeskjedDTO(beskjedList)
     }
 
-    suspend fun getAllCachedEventsForUser(bruker: User): List<Beskjed> {
+    suspend fun getAllCachedEventsForUser(bruker: User): List<BeskjedDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        return beskjedConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
+        val beskjedList = beskjedConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
+
+        return BeskjedTransformer.toBeskjedDTO(beskjedList)
     }
 }

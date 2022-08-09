@@ -1,5 +1,5 @@
 @file:UseSerializers(ZonedDateTimeSerializer::class)
-package no.nav.personbruker.dittnav.eventer.modia.beskjed
+package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTime
 import java.time.ZonedDateTime
 
 @Serializable
-data class Beskjed(
+data class OppgaveDTO(
     val fodselsnummer: String,
     val grupperingsId: String,
     val eventId: String,
@@ -15,10 +15,7 @@ data class Beskjed(
     val produsent: String,
     val sikkerhetsnivaa: Int,
     val sistOppdatert: ZonedDateTime,
-    val synligFremTil: ZonedDateTime? = null,
     val tekst: String,
     val link: String,
     val aktiv: Boolean,
-    val eksternVarslingSendt: Boolean,
-    val eksternVarslingKanaler: List<String>
 )

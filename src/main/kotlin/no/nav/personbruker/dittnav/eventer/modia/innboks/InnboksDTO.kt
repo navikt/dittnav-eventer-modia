@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTime
 import java.time.ZonedDateTime
 
 @Serializable
-data class Innboks(
+data class InnboksDTO(
     val produsent: String,
     val forstBehandlet: ZonedDateTime,
     val fodselsnummer: String,
@@ -17,7 +17,5 @@ data class Innboks(
     val link: String,
     val sikkerhetsnivaa: Int,
     val sistOppdatert: ZonedDateTime,
-    val aktiv: Boolean,
-    val eksternVarslingSendt: Boolean,
-    val eksternVarslingKanaler: List<String>
+    val aktiv: Boolean
 )

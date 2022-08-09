@@ -17,5 +17,7 @@ data class Oppgave(
     val sistOppdatert: ZonedDateTime,
     val tekst: String,
     val link: String,
-    val aktiv: Boolean
+    val aktiv: Boolean,
+    val eksternVarslingSendt: Boolean,
+    val eksternVarslingKanaler: List<String>
 )

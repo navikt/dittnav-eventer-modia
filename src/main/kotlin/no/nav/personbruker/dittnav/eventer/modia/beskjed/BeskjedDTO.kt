@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTime
 import java.time.ZonedDateTime
 
 @Serializable
-data class Beskjed(
+data class BeskjedDTO(
     val fodselsnummer: String,
     val grupperingsId: String,
     val eventId: String,
@@ -18,7 +18,5 @@ data class Beskjed(
     val synligFremTil: ZonedDateTime? = null,
     val tekst: String,
     val link: String,
-    val aktiv: Boolean,
-    val eksternVarslingSendt: Boolean,
-    val eksternVarslingKanaler: List<String>
+    val aktiv: Boolean
 )

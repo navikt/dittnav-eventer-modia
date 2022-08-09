@@ -1,15 +1,13 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import io.mockk.clearMocks
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
 import no.nav.personbruker.dittnav.eventer.modia.common.InnloggetBrukerObjectMother
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
@@ -25,6 +23,12 @@ class BeskjedEventServiceTest {
     private val azureToken = AzureToken("tokenValue")
 
     private val mockedEvents: List<Beskjed> = mockk()
+    private val transformedEvents: List<BeskjedDTO> = mockk()
+
+    @BeforeEach
+    fun setupMock() {
+        mockkObject(BeskjedTransformer)
+    }
 
     @AfterEach
     fun cleanUp() {
@@ -41,12 +45,17 @@ class BeskjedEventServiceTest {
             beskjedConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
         } returns mockedEvents
 
+        every {
+            BeskjedTransformer.toBeskjedDTO(mockedEvents)
+        } returns transformedEvents
+
         val result = runBlocking {
             beskjedEventService.getActiveCachedEventsForUser(bruker)
         }
 
-        result `should be equal to` mockedEvents
+        result `should be equal to` transformedEvents
 
+        verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getActiveEvents(azureToken, bruker.fodselsnummer) }
     }
@@ -61,12 +70,17 @@ class BeskjedEventServiceTest {
             beskjedConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
         } returns mockedEvents
 
+        every {
+            BeskjedTransformer.toBeskjedDTO(mockedEvents)
+        } returns transformedEvents
+
         val result = runBlocking {
             beskjedEventService.getInactiveCachedEventsForUser(bruker)
         }
 
-        result `should be equal to` mockedEvents
+        result `should be equal to` transformedEvents
 
+        verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer) }
     }
@@ -81,12 +95,17 @@ class BeskjedEventServiceTest {
             beskjedConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
         } returns mockedEvents
 
+        every {
+            BeskjedTransformer.toBeskjedDTO(mockedEvents)
+        } returns transformedEvents
+
         val result = runBlocking {
             beskjedEventService.getAllCachedEventsForUser(bruker)
         }
 
-        result `should be equal to` mockedEvents
+        result `should be equal to` transformedEvents
 
+        verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getAllEvents(azureToken, bruker.fodselsnummer) }
     }

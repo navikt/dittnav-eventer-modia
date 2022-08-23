@@ -7,6 +7,8 @@ Microservice som brukes for å lese inn eventer fra DittNAV sin event-cache (dat
 2. Start appen ved å kjøre filen EventHandlerApplication eller kjør `./gradlew runServer`.
 3. Appen nås på ´http://localhost:8096´
 
+# Linting
+`ktlint -F` for å kjøre linting med autofix
 # Henvendelser
 
 Spørsmål knyttet til koden eller prosjektet kan rettes mot https://github.com/orgs/navikt/teams/personbruker

@@ -36,7 +36,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         }
         authenticate {
             oppgaveApi(appContext.oppgaveEventService)
-            beskjedApi(appContext.beskjedEventService)
+            beskjedApi(appContext.beskjedFetcher)
             innboksApi(appContext.innboksEventService)
         }
     }

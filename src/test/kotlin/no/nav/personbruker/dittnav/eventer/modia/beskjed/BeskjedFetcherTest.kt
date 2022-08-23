@@ -18,12 +18,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BeskjedEventServiceTest {
+class BeskjedFetcherTest {
 
     private val beskjedConsumer: BeskjedConsumer = mockk()
     private val tokenFetcher: AzureTokenFetcher = mockk()
 
-    private val beskjedEventService = BeskjedEventService(beskjedConsumer, tokenFetcher)
+    private val beskjedFetcher = BeskjedFetcher(beskjedConsumer, tokenFetcher)
     private val bruker = InnloggetBrukerObjectMother.createInnloggetBruker("123")
 
     private val azureToken = AzureToken("tokenValue")
@@ -56,7 +56,7 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.getActiveCachedEventsForUser(bruker)
+            beskjedFetcher.getActiveCachedEventsForUser(bruker)
         }
 
         result `should be equal to` transformedEvents
@@ -81,7 +81,7 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.getInactiveCachedEventsForUser(bruker)
+            beskjedFetcher.getInactiveCachedEventsForUser(bruker)
         }
 
         result `should be equal to` transformedEvents
@@ -106,7 +106,7 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.getAllCachedEventsForUser(bruker)
+            beskjedFetcher.getAllCachedEventsForUser(bruker)
         }
 
         result `should be equal to` transformedEvents

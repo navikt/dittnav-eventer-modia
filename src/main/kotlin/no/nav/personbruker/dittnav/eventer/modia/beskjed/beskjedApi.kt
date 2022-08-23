@@ -9,14 +9,14 @@ import no.nav.personbruker.dittnav.eventer.modia.common.respondWithError
 import no.nav.personbruker.dittnav.eventer.modia.config.doIfValidRequest
 import org.slf4j.LoggerFactory
 
-fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
+fun Route.beskjedApi(beskjedFetcher: BeskjedFetcher) {
 
-    val log = LoggerFactory.getLogger(BeskjedEventService::class.java)
+    val log = LoggerFactory.getLogger(BeskjedFetcher::class.java)
 
     get("/fetch/beskjed/aktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val aktiveBeskjedEvents = beskjedEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
+                val aktiveBeskjedEvents = beskjedFetcher.getActiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveBeskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
@@ -27,7 +27,7 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
     get("/fetch/beskjed/inaktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val inaktiveBeskjedEvents = beskjedEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
+                val inaktiveBeskjedEvents = beskjedFetcher.getInactiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, inaktiveBeskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
@@ -38,7 +38,7 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
     get("/fetch/beskjed/all") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val beskjedEvents = beskjedEventService.getAllCachedEventsForUser(userToFetchEventsFor)
+                val beskjedEvents = beskjedFetcher.getAllCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, beskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)

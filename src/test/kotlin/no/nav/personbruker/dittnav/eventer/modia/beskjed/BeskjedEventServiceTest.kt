@@ -1,6 +1,12 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import io.mockk.*
+import io.mockk.clearMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher

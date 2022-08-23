@@ -1,6 +1,6 @@
 package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
-import io.ktor.client.*
+import io.ktor.client.HttpClient
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.retryOnConnectionLost
 import no.nav.personbruker.dittnav.eventer.modia.config.getWithAzureAndFnr
@@ -33,7 +33,11 @@ class OppgaveConsumer(
         }
     }
 
-    private suspend fun getExternalEvents(accessToken: AzureToken, fnr: String, completePathToEndpoint: URL): List<Oppgave> {
+    private suspend fun getExternalEvents(
+        accessToken: AzureToken,
+        fnr: String,
+        completePathToEndpoint: URL
+    ): List<Oppgave> {
         return client.getWithAzureAndFnr(completePathToEndpoint, accessToken, fnr)
     }
 }

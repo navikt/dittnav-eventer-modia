@@ -30,7 +30,6 @@ object Security {
             val tokenFromCookie = call.request.cookies[cookieName]
             val tokenAsAuthHeader = "Bearer $tokenFromCookie"
             parseAuthorizationHeader(tokenAsAuthHeader)
-
         } catch (t: Throwable) {
             log.warn("Det skjedde en feil ved forsøket på å hente ut et token fra cookie-en '$cookieName'", t)
             null
@@ -39,9 +38,9 @@ object Security {
 
     fun initJwkProvider(securityJwksUri: URL): JwkProvider {
         return JwkProviderBuilder(securityJwksUri)
-                .cached(10, 24, TimeUnit.HOURS)
-                .rateLimited(10, 1, TimeUnit.MINUTES)
-                .build()
+            .cached(10, 24, TimeUnit.HOURS)
+            .rateLimited(10, 1, TimeUnit.MINUTES)
+            .build()
     }
 
     fun validationLogicPerRequest(credentials: JWTCredential, environment: Environment): JWTPrincipal? {
@@ -55,5 +54,4 @@ object Security {
         environment.issoAcceptedAudience.any {
             credentials.payload.audience.contains(it)
         }
-
 }

@@ -18,20 +18,17 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
             try {
                 val aktiveInnboksEvents = innboksEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveInnboksEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
         }
     }
 
-
     get("/fetch/innboks/inaktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
                 val inaktiveInnboksEvents = innboksEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, inaktiveInnboksEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -43,7 +40,6 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
             try {
                 val innboksEvents = innboksEventService.getAllCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, innboksEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

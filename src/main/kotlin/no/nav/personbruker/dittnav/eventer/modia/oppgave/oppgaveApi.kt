@@ -18,7 +18,6 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
             try {
                 val aktiveOppgaveEvents = oppgaveEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveOppgaveEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -41,7 +40,6 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
             try {
                 val oppgaveEvents = oppgaveEventService.getAllCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, oppgaveEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

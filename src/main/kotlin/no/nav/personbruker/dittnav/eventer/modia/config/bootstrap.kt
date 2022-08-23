@@ -1,7 +1,6 @@
 package no.nav.personbruker.dittnav.eventer.modia.config
 
 import io.ktor.application.Application
-import io.ktor.application.ApplicationStopPreparing
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate

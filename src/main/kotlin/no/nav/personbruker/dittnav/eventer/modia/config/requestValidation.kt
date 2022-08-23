@@ -18,13 +18,11 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.doIfValidRequest(handl
         if (isFodselsnummerOfValidLength(fnrHeader)) {
             val user = User(fnrHeader)
             handler.invoke(user)
-
         } else {
             val msg = "Header-en '$headerName' inneholder ikke et gyldig fødselsnummer."
             log.warn(msg)
             call.respond(HttpStatusCode.BadRequest, msg)
         }
-
     } else {
         val msg = "Requesten mangler header-en '$headerName'"
         log.warn(msg)

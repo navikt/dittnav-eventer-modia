@@ -1,33 +1,35 @@
 package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
-import no.nav.personbruker.dittnav.eventer.modia.common.User
 
 class OppgaveEventService(
     private val oppgaveConsumer: OppgaveConsumer,
     private val azureTokenFetcher: AzureTokenFetcher
 ) {
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<OppgaveDTO> {
+    suspend fun getActiveCachedEventsForUser(
+        fnr: String
+    ): List<OppgaveDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
-
-        val oppgaveList = oppgaveConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
+        val oppgaveList = oppgaveConsumer.getActiveEvents(azureToken, fnr)
 
         return OppgaveTransformer.toOppgaveDTO(oppgaveList)
     }
 
-    suspend fun getInactiveCachedEventsForUser(bruker: User): List<OppgaveDTO> {
+    suspend fun getInactiveCachedEventsForUser(
+        fnr: String
+    ): List<OppgaveDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
-
-        val oppgaveList = oppgaveConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
+        val oppgaveList = oppgaveConsumer.getInactiveEvents(azureToken, fnr)
 
         return OppgaveTransformer.toOppgaveDTO(oppgaveList)
     }
 
-    suspend fun getAllCachedEventsForUser(bruker: User): List<OppgaveDTO> {
+    suspend fun getAllCachedEventsForUser(
+        fnr: String
+    ): List<OppgaveDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
-
-        val oppgaveList = oppgaveConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
+        val oppgaveList = oppgaveConsumer.getAllEvents(azureToken, fnr)
 
         return OppgaveTransformer.toOppgaveDTO(oppgaveList)
     }

@@ -32,12 +32,6 @@ class MaskedLoggingEventTest {
         MaskedLoggingEvent.mask(null) `should be equal to` null
     }
 
-    @Test
-    fun `sjekk at maskert data formatteres riktig`() {
-        MaskedLoggingEvent.mask("12345678901-12345678901 12345678901")!! `should be equal to` "$MASKED_FNR-$MASKED_FNR $MASKED_FNR"
-        MaskedLoggingEvent.mask("12345678901,12345678901")!! `should be equal to` "$MASKED_FNR,$MASKED_FNR"
-    }
-
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MaskedLoggingEventTest::class.java)
         const val MASKED_FNR = "***********"

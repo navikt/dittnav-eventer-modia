@@ -16,7 +16,7 @@ fun Route.beskjedApi(beskjedFetcher: BeskjedFetcher) {
     get("/fetch/beskjed/aktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val aktiveBeskjedEvents = beskjedFetcher.getActiveCachedEventsForUser(userToFetchEventsFor)
+                val aktiveBeskjedEvents = beskjedFetcher.aktiveVarsler(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveBeskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
@@ -27,7 +27,7 @@ fun Route.beskjedApi(beskjedFetcher: BeskjedFetcher) {
     get("/fetch/beskjed/inaktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val inaktiveBeskjedEvents = beskjedFetcher.getInactiveCachedEventsForUser(userToFetchEventsFor)
+                val inaktiveBeskjedEvents = beskjedFetcher.inaktiveVarsler(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, inaktiveBeskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
@@ -38,7 +38,7 @@ fun Route.beskjedApi(beskjedFetcher: BeskjedFetcher) {
     get("/fetch/beskjed/all") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val beskjedEvents = beskjedFetcher.getAllCachedEventsForUser(userToFetchEventsFor)
+                val beskjedEvents = beskjedFetcher.alleVarsler(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, beskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)

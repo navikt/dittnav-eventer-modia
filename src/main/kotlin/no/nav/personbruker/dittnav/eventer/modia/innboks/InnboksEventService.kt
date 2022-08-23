@@ -1,33 +1,32 @@
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
-import no.nav.personbruker.dittnav.eventer.modia.common.User
 
 class InnboksEventService(
     private val innboksConsumer: InnboksConsumer,
     private val azureTokenFetcher: AzureTokenFetcher
 ) {
 
-    suspend fun getActiveCachedEventsForUser(bruker: User): List<InnboksDTO> {
+    suspend fun getActiveCachedEventsForUser(fnr: String): List<InnboksDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        val innboksList = innboksConsumer.getActiveEvents(azureToken, bruker.fodselsnummer)
+        val innboksList = innboksConsumer.getActiveEvents(azureToken, fnr)
 
         return InnboksTransformer.toInnboksDTO(innboksList)
     }
 
-    suspend fun getInactiveCachedEventsForUser(bruker: User): List<InnboksDTO> {
+    suspend fun getInactiveCachedEventsForUser(fnr: String): List<InnboksDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        val innboksList = innboksConsumer.getInactiveEvents(azureToken, bruker.fodselsnummer)
+        val innboksList = innboksConsumer.getInactiveEvents(azureToken, fnr)
 
         return InnboksTransformer.toInnboksDTO(innboksList)
     }
 
-    suspend fun getAllCachedEventsForUser(bruker: User): List<InnboksDTO> {
+    suspend fun getAllCachedEventsForUser(fnr: String): List<InnboksDTO> {
         val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
-        val innboksList = innboksConsumer.getAllEvents(azureToken, bruker.fodselsnummer)
+        val innboksList = innboksConsumer.getAllEvents(azureToken, fnr)
 
         return InnboksTransformer.toInnboksDTO(innboksList)
     }

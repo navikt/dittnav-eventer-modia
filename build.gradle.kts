@@ -16,7 +16,7 @@ plugins {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions.jvmTarget = "17"
 }
 
 repositories {
@@ -45,7 +45,9 @@ dependencies {
     implementation(Prometheus.common)
     implementation(Prometheus.logback)
     implementation(Prometheus.httpServer)
+
     implementation(Tms.KtorTokenSupport.azureExchange)
+    testImplementation(Ktor.serverTestHost)
     testImplementation(Bouncycastle.bcprovJdk15on)
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)
@@ -54,10 +56,12 @@ dependencies {
     testImplementation(Junit.engine)
     testImplementation(Kluent.kluent)
     testImplementation(Mockk.mockk)
+    testImplementation(Tms.KtorTokenSupport.authenticationInstallerMock)
+    testImplementation(Tms.KtorTokenSupport.tokenXValidationMock)
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("no.nav.personbruker.dittnav.eventer.modia.config.AppKt")
 }
 
 tasks {

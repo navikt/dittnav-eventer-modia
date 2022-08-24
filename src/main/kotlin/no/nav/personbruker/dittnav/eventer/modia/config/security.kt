@@ -2,14 +2,24 @@ package no.nav.personbruker.dittnav.eventer.modia.config
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
+import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
+import io.ktor.application.install
+import io.ktor.auth.Authentication
 import io.ktor.auth.jwt.JWTAuthenticationProvider
 import io.ktor.auth.jwt.JWTCredential
 import io.ktor.auth.jwt.JWTPrincipal
+import io.ktor.auth.jwt.jwt
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.http.auth.parseAuthorizationHeader
 import java.net.URL
 import java.util.concurrent.TimeUnit
+
+internal fun issoAuthenticationBuilder(environment: Environment): Application.() -> Unit = {
+    install(Authentication) {
+        jwt { setupIssoAuthentication(environment) }
+    }
+}
 
 fun JWTAuthenticationProvider.Configuration.setupIssoAuthentication(environment: Environment) {
     authHeader(Security::useTokenFromCookie)

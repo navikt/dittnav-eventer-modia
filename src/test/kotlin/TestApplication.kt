@@ -1,7 +1,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.application.Application
 import io.mockk.mockk
-import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
+import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.config.api
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
@@ -12,7 +12,7 @@ fun mockApi(
     authConfig: Application.() -> Unit = mockAuthBuilder(),
     oppgaveEventService: OppgaveEventService = mockk(relaxed = true),
     innboksEventService: InnboksEventService = mockk(relaxed = true),
-    beskjedEventService: BeskjedEventService = mockk(relaxed = true)
+    beskjedVarselService: BeskjedVarselService = mockk(relaxed = true)
 
 ): Application.() -> Unit {
     return fun Application.() {
@@ -21,7 +21,7 @@ fun mockApi(
             authConfig = {},
             oppgaveEventService = oppgaveEventService,
             innboksEventService = innboksEventService,
-            beskjedEventService = beskjedEventService
+            beskjedVarselService = beskjedVarselService
         )
     }
 }

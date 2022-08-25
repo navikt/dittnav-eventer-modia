@@ -8,7 +8,7 @@ class InnboksEventService(
 ) {
 
     suspend fun getActiveCachedEventsForUser(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
 
         val innboksList = innboksConsumer.getActiveEvents(azureToken, fnr)
 
@@ -16,7 +16,7 @@ class InnboksEventService(
     }
 
     suspend fun getInactiveCachedEventsForUser(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
 
         val innboksList = innboksConsumer.getInactiveEvents(azureToken, fnr)
 
@@ -24,7 +24,7 @@ class InnboksEventService(
     }
 
     suspend fun getAllCachedEventsForUser(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
 
         val innboksList = innboksConsumer.getAllEvents(azureToken, fnr)
 

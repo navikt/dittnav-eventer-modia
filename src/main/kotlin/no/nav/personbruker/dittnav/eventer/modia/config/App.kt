@@ -3,7 +3,7 @@ package no.nav.personbruker.dittnav.eventer.modia.config
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedConsumer
-import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
+import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksConsumer
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
@@ -22,7 +22,7 @@ fun main() {
     val httpClient = HttpClientBuilder.build()
 
     val beskjedConsumer = BeskjedConsumer(httpClient, URL(environment.eventHandlerUrl))
-    val beskjedEventService = BeskjedEventService(beskjedConsumer, azureTokenFetcher)
+    val beskjedVarselService = BeskjedVarselService(beskjedConsumer, azureTokenFetcher)
 
     val oppgaveConsumer = OppgaveConsumer(httpClient, URL(environment.eventHandlerUrl))
     val oppgaveEventService = OppgaveEventService(oppgaveConsumer, azureTokenFetcher)
@@ -34,7 +34,7 @@ fun main() {
         api(
             authConfig = issoAuthenticationBuilder(environment),
             oppgaveEventService = oppgaveEventService,
-            beskjedEventService = beskjedEventService,
+            beskjedVarselService = beskjedVarselService,
             innboksEventService = innboksEventService
         )
     }.start(wait = true)

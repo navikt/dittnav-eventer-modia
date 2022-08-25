@@ -43,7 +43,7 @@ class OppgaveEventServiceTest {
     @Test
     fun `should request an azure token and make request on behalf of user for active oppgave events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -61,14 +61,14 @@ class OppgaveEventServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getActiveEvents(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for inactive oppgave events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -86,14 +86,14 @@ class OppgaveEventServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getInactiveEvents(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for all oppgave events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -111,7 +111,7 @@ class OppgaveEventServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getAllEvents(azureToken, fnr) }
     }
 }

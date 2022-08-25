@@ -17,12 +17,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BeskjedEventServiceTest {
+class BeskjedVarselServiceTest {
 
     private val beskjedConsumer: BeskjedConsumer = mockk()
     private val tokenFetcher: AzureTokenFetcher = mockk()
 
-    private val beskjedEventService = BeskjedEventService(beskjedConsumer, tokenFetcher)
+    private val beskjedVarselService = BeskjedVarselService(beskjedConsumer, tokenFetcher)
     private val fnr = "123"
 
     private val azureToken = AzureToken("tokenValue")
@@ -43,7 +43,7 @@ class BeskjedEventServiceTest {
     @Test
     fun `should request an azure token and make request on behalf of user for active beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -55,20 +55,20 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.aktiveVarsler(fnr)
+            beskjedVarselService.aktiveVarsler(fnr)
         }
 
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getActiveEvents(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for inactive beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -80,20 +80,20 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.getInactiveCachedEventsForUser(fnr)
+            beskjedVarselService.inaktiveVarsler(fnr)
         }
 
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getInactiveEvents(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for all beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForEventHandler()
+            tokenFetcher.fetchTokenForVarselHandler()
         } returns azureToken
 
         coEvery {
@@ -105,13 +105,13 @@ class BeskjedEventServiceTest {
         } returns transformedEvents
 
         val result = runBlocking {
-            beskjedEventService.getAllCachedEventsForUser(fnr)
+            beskjedVarselService.alleVarsler(fnr)
         }
 
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getAllEvents(azureToken, fnr) }
     }
 }

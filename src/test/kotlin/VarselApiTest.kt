@@ -10,7 +10,7 @@ import io.ktor.server.testing.withTestApplication
 import io.mockk.coEvery
 import io.mockk.mockk
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedDTO
-import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
+import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksDTO
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveDTO
@@ -52,13 +52,13 @@ class ApiTest {
     @Test
     fun beskjedvarsler() {
         val dummyFnr = "16045571871"
-        val beskjedEventService = mockk<BeskjedEventService>()
+        val beskjedVarselService = mockk<BeskjedVarselService>()
         val rootPath = "/dittnav-eventer-modia/fetch/beskjed"
-        coEvery { beskjedEventService.getInactiveCachedEventsForUser(dummyFnr) } returns dummyBeskjeder(5)
-        coEvery { beskjedEventService.aktiveVarsler(dummyFnr) } returns dummyBeskjeder(1)
-        coEvery { beskjedEventService.getAllCachedEventsForUser(dummyFnr) } returns dummyBeskjeder(6)
+        coEvery { beskjedVarselService.inaktiveVarsler(dummyFnr) } returns dummyBeskjeder(5)
+        coEvery { beskjedVarselService.aktiveVarsler(dummyFnr) } returns dummyBeskjeder(1)
+        coEvery { beskjedVarselService.alleVarsler(dummyFnr) } returns dummyBeskjeder(6)
 
-        withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
+        withTestApplication(mockApi(beskjedVarselService = beskjedVarselService)) {
             assertVarselApiCall("$rootPath/inaktive", dummyFnr, 5)
             assertVarselApiCall("$rootPath/aktive", dummyFnr, 1)
             assertVarselApiCall("$rootPath/all", dummyFnr, 6)
@@ -153,7 +153,7 @@ private fun InnboksDTO.createList(antall: Int): List<InnboksDTO> = mutableListOf
     }
 }
 
-private fun OppgaveDTO.createList(antall:Int): List<OppgaveDTO> = mutableListOf<OppgaveDTO>() .also { list ->
+private fun OppgaveDTO.createList(antall: Int): List<OppgaveDTO> = mutableListOf<OppgaveDTO>().also { list ->
     for (i in 1..antall) {
         list.add(this)
     }
@@ -165,7 +165,6 @@ private fun BeskjedDTO.createList(antall: Int): MutableList<BeskjedDTO> =
             list.add(this)
         }
     }
-
 
 fun allRoutes(root: Route): List<Route> {
     return listOf(root) + root.children.flatMap { allRoutes(it) }

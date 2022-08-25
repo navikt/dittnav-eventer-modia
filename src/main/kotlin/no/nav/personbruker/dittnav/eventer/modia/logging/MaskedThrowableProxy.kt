@@ -3,7 +3,6 @@ package no.nav.personbruker.dittnav.eventer.modia.logging
 import ch.qos.logback.classic.spi.IThrowableProxy
 import ch.qos.logback.classic.spi.StackTraceElementProxy
 
-
 class MaskedThrowableProxy private constructor(private val throwableProxy: IThrowableProxy) : IThrowableProxy {
     override fun getMessage(): String? {
         return MaskedLoggingEvent.mask(throwableProxy.message)
@@ -40,5 +39,4 @@ class MaskedThrowableProxy private constructor(private val throwableProxy: IThro
             return if (throwableProxy == null) throwableProxy else MaskedThrowableProxy(throwableProxy)
         }
     }
-
 }

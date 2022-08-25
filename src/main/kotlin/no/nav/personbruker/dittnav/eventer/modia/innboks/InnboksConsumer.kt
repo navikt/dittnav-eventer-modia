@@ -1,6 +1,6 @@
 package no.nav.personbruker.dittnav.eventer.modia.innboks
 
-import io.ktor.client.*
+import io.ktor.client.HttpClient
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.retryOnConnectionLost
 import no.nav.personbruker.dittnav.eventer.modia.config.getWithAzureAndFnr

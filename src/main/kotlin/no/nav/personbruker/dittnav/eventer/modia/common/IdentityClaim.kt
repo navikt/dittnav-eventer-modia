@@ -1,8 +1,8 @@
 package no.nav.personbruker.dittnav.eventer.modia.common
 
-import java.util.*
+import java.util.Locale
 
-enum class IdentityClaim(val claimName : String) {
+enum class IdentityClaim(val claimName: String) {
 
     SUBJECT("sub"),
     PID("pid");
@@ -22,5 +22,4 @@ enum class IdentityClaim(val claimName : String) {
     override fun toString(): String {
         return "IdentidyClaim(claimName='$claimName')"
     }
-
 }

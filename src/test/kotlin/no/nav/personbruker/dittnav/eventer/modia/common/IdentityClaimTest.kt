@@ -1,8 +1,8 @@
 package no.nav.personbruker.dittnav.eventer.modia.common
 
+import org.amshove.kluent.invoking
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should throw`
-import org.amshove.kluent.invoking
 import org.junit.jupiter.api.Test
 
 internal class IdentityClaimTest {

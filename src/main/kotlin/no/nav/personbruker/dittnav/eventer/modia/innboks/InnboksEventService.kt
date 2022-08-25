@@ -32,4 +32,3 @@ class InnboksEventService(
         return InnboksTransformer.toInnboksDTO(innboksList)
     }
 }
-

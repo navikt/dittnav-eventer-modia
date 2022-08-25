@@ -73,5 +73,4 @@ class MaskedLoggingEvent internal constructor(private val iLoggingEvent: ILoggin
             return string?.replace("(^|\\W)\\d{11}(?=$|\\W)".toRegex(), "$1***********")
         }
     }
-
 }

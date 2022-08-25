@@ -1,9 +1,11 @@
-package no.nav.personbruker.dittnav.eventer.modia.config
+package no.nav.personbruker.dittnav.eventer.modia.config // ktlint-disable filename
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.timeout
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.request.header
+import io.ktor.client.request.request
+import io.ktor.client.request.url
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken

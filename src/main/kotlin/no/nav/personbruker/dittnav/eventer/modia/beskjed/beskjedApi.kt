@@ -18,7 +18,6 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
             try {
                 val aktiveBeskjedEvents = beskjedEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveBeskjedEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -30,7 +29,6 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
             try {
                 val inaktiveBeskjedEvents = beskjedEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, inaktiveBeskjedEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -42,11 +40,9 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
             try {
                 val beskjedEvents = beskjedEventService.getAllCachedEventsForUser(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, beskjedEvents)
-
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
-
         }
     }
 }

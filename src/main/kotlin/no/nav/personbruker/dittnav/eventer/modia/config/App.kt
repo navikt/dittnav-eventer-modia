@@ -17,17 +17,17 @@ fun main() {
     val environment = Environment()
 
     val azureService = AzureServiceBuilder.buildAzureService(enableDefaultProxy = true)
-    val azureTokenFetcher = AzureTokenFetcher(azureService, environment.eventHandlerClientId)
+    val azureTokenFetcher = AzureTokenFetcher(azureService, environment.varselHandlerClientId)
 
     val httpClient = HttpClientBuilder.build()
 
-    val beskjedConsumer = BeskjedConsumer(httpClient, URL(environment.eventHandlerUrl))
+    val beskjedConsumer = BeskjedConsumer(httpClient, URL(environment.varselHandlerUrl))
     val beskjedVarselService = BeskjedVarselService(beskjedConsumer, azureTokenFetcher)
 
-    val oppgaveConsumer = OppgaveConsumer(httpClient, URL(environment.eventHandlerUrl))
+    val oppgaveConsumer = OppgaveConsumer(httpClient, URL(environment.varselHandlerUrl))
     val oppgaveEventService = OppgaveEventService(oppgaveConsumer, azureTokenFetcher)
 
-    val innboksConsumer = InnboksConsumer(httpClient, URL(environment.eventHandlerUrl))
+    val innboksConsumer = InnboksConsumer(httpClient, URL(environment.varselHandlerUrl))
     val innboksEventService = InnboksEventService(innboksConsumer, azureTokenFetcher)
 
     embeddedServer(Netty, port = 8080) {

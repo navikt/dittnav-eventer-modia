@@ -8,8 +8,8 @@ data class Environment(
     val issoAcceptedAudience: List<String> = getEnvVar("ISSO_ACCEPTED_AUDIENCE")
         .split(",")
         .map(String::trim),
-    val eventHandlerUrl: String = getEnvVar("EVENT_HANDLER_URL"),
-    val eventHandlerClientId: String = getEnvVar("EVENT_HANDLER_CLIENT_ID")
+    val varselHandlerUrl: String = getEnvVar("EVENT_HANDLER_URL"),
+    val varselHandlerClientId: String = getEnvVar("EVENT_HANDLER_CLIENT_ID")
 )
 
 fun getEnvVar(varName: String): String {

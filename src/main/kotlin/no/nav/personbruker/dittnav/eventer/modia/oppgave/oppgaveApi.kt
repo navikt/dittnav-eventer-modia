@@ -9,15 +9,14 @@ import no.nav.personbruker.dittnav.eventer.modia.common.respondWithError
 import no.nav.personbruker.dittnav.eventer.modia.config.doIfValidRequest
 import org.slf4j.LoggerFactory
 
-fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
+fun Route.oppgaveApi(oppgaveVarselService: OppgaveVarselService) {
 
-    val log = LoggerFactory.getLogger(OppgaveEventService::class.java)
+    val log = LoggerFactory.getLogger(OppgaveVarselService::class.java)
 
     get("/fetch/oppgave/aktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val aktiveOppgaveEvents = oppgaveEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, aktiveOppgaveEvents)
+                call.respond(HttpStatusCode.OK, oppgaveVarselService.aktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -25,10 +24,9 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
     }
 
     get("/fetch/oppgave/inaktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val inaktiveOppgaveEvents = oppgaveEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, inaktiveOppgaveEvents)
+                call.respond(HttpStatusCode.OK, oppgaveVarselService.inaktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -36,10 +34,9 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
     }
 
     get("/fetch/oppgave/all") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val oppgaveEvents = oppgaveEventService.getAllCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, oppgaveEvents)
+                call.respond(HttpStatusCode.OK, oppgaveVarselService.alleVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

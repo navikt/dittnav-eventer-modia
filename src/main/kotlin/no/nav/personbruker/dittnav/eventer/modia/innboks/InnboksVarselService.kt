@@ -8,7 +8,7 @@ class InnboksVarselService(
 ) {
 
     suspend fun aktiveVarsler(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
         val innboksList = innboksConsumer.getAktiveVarsler(azureToken, fnr)
 
@@ -16,7 +16,7 @@ class InnboksVarselService(
     }
 
     suspend fun inaktiveVarsler(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
         val innboksList = innboksConsumer.getInaktiveVarsler(azureToken, fnr)
 
@@ -24,7 +24,7 @@ class InnboksVarselService(
     }
 
     suspend fun alleVarsler(fnr: String): List<InnboksDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
 
         val innboksList = innboksConsumer.getAlleVarsler(azureToken, fnr)
 

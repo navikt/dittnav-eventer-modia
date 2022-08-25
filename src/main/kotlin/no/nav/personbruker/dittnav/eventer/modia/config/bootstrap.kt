@@ -14,12 +14,12 @@ import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksVarselService
 import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
-import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
+import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveVarselService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
 
 fun Application.api(
     authConfig: Application.() -> Unit,
-    oppgaveEventService: OppgaveEventService,
+    oppgaveVarselService: OppgaveVarselService,
     innboksVarselService: InnboksVarselService,
     beskjedVarselService: BeskjedVarselService
 ) {
@@ -37,7 +37,7 @@ fun Application.api(
             }
 
             authenticate {
-                oppgaveApi(oppgaveEventService)
+                oppgaveApi(oppgaveVarselService)
                 innboksApi(innboksVarselService)
                 beskjedApi(beskjedVarselService)
             }

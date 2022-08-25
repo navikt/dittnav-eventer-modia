@@ -8,12 +8,12 @@ import java.net.URL
 
 class BeskjedConsumer(
     private val client: HttpClient,
-    varselHandlerBaseURL: URL
+    eventHandlerBaseURL: URL
 ) {
 
-    private val aktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/aktive")
-    private val inaktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/inaktive")
-    private val alleVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/all")
+    private val aktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/aktive")
+    private val inaktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/inaktive")
+    private val alleVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/all")
 
     suspend fun getAktiveVarsler(accessToken: AzureToken, fnr: String): List<Beskjed> {
         return retryOnConnectionLost {

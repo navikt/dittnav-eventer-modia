@@ -8,21 +8,21 @@ class BeskjedVarselService(
 ) {
 
     suspend fun aktiveVarsler(fnr: String): List<BeskjedDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
         val beskjedList = beskjedConsumer.getAktiveVarsler(azureToken, fnr)
 
         return BeskjedTransformer.toBeskjedDTO(beskjedList)
     }
 
     suspend fun inaktiveVarsler(fnr: String): List<BeskjedDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
         val beskjedList = beskjedConsumer.getInaktiveVarsler(azureToken, fnr)
 
         return BeskjedTransformer.toBeskjedDTO(beskjedList)
     }
 
     suspend fun alleVarsler(fnr: String): List<BeskjedDTO> {
-        val azureToken = azureTokenFetcher.fetchTokenForVarselHandler()
+        val azureToken = azureTokenFetcher.fetchTokenForEventHandler()
         val beskjedList = beskjedConsumer.getAlleVarsler(azureToken, fnr)
 
         return BeskjedTransformer.toBeskjedDTO(beskjedList)

@@ -11,29 +11,29 @@ class OppgaveConsumer(
     eventHandlerBaseURL: URL
 ) {
 
-    private val activeEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/aktive")
-    private val inactiveEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/inaktive")
-    private val allEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/all")
+    private val aktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/aktive")
+    private val inaktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/inaktive")
+    private val alleVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/oppgave/all")
 
-    suspend fun getActiveEvents(accessToken: AzureToken, fnr: String): List<Oppgave> {
+    suspend fun getAktiveVarsler(accessToken: AzureToken, fnr: String): List<Oppgave> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, activeEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, aktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getInactiveEvents(accessToken: AzureToken, fnr: String): List<Oppgave> {
+    suspend fun getInaktiveVarsler(accessToken: AzureToken, fnr: String): List<Oppgave> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, inactiveEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, inaktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getAllEvents(accessToken: AzureToken, fnr: String): List<Oppgave> {
+    suspend fun getAlleVarsler(accessToken: AzureToken, fnr: String): List<Oppgave> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, allEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, alleVarslerEndpoint)
         }
     }
 
-    private suspend fun getExternalEvents(
+    private suspend fun getExternalVarsler(
         accessToken: AzureToken,
         fnr: String,
         completePathToEndpoint: URL

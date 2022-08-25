@@ -14,7 +14,7 @@ import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksDTO
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksVarselService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveDTO
-import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
+import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveVarselService
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -68,13 +68,13 @@ class ApiTest {
     @Test
     fun oppgavevarsler() {
         val dummyFnr = "16045571871"
-        val oppgaveEventService = mockk<OppgaveEventService>()
+        val oppgaveVarselService = mockk<OppgaveVarselService>()
         val rootPath = "/dittnav-eventer-modia/fetch/oppgave"
-        coEvery { oppgaveEventService.getInactiveCachedEventsForUser(dummyFnr) } returns dummyOppgaver(5)
-        coEvery { oppgaveEventService.getActiveCachedEventsForUser(dummyFnr) } returns dummyOppgaver(1)
-        coEvery { oppgaveEventService.getAllCachedEventsForUser(dummyFnr) } returns dummyOppgaver(6)
+        coEvery { oppgaveVarselService.inaktiveVarsler(dummyFnr) } returns dummyOppgaver(5)
+        coEvery { oppgaveVarselService.aktiveVarsler(dummyFnr) } returns dummyOppgaver(1)
+        coEvery { oppgaveVarselService.alleVarsler(dummyFnr) } returns dummyOppgaver(6)
 
-        withTestApplication(mockApi(oppgaveEventService = oppgaveEventService)) {
+        withTestApplication(mockApi(oppgaveVarselService = oppgaveVarselService)) {
             assertVarselApiCall("$rootPath/inaktive", dummyFnr, 5)
             assertVarselApiCall("$rootPath/aktive", dummyFnr, 1)
             assertVarselApiCall("$rootPath/all", dummyFnr, 6)

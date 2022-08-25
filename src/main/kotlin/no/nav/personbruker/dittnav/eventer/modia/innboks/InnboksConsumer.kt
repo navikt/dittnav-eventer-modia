@@ -8,12 +8,12 @@ import java.net.URL
 
 class InnboksConsumer(
     private val client: HttpClient,
-    varselHandlerBaseURL: URL
+    eventHandlerBaseURL: URL
 ) {
 
-    private val aktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/aktive")
-    private val inaktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/inaktive")
-    private val alleVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/all")
+    private val aktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/aktive")
+    private val inaktiveVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/inaktive")
+    private val alleVarslerEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/all")
 
     suspend fun getAktiveVarsler(accessToken: AzureToken, fnr: String): List<Innboks> {
         return retryOnConnectionLost {

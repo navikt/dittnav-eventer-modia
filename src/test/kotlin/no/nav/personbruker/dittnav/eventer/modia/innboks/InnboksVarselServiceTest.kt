@@ -43,7 +43,7 @@ class InnboksVarselServiceTest {
     @Test
     fun `should request an azure token and make request on behalf of user for active innboks events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -61,14 +61,14 @@ class InnboksVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getAktiveVarsler(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for inactive innboks events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -86,14 +86,14 @@ class InnboksVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getInaktiveVarsler(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for all innboks events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -111,7 +111,7 @@ class InnboksVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getAlleVarsler(azureToken, fnr) }
     }
 }

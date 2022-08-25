@@ -43,7 +43,7 @@ class BeskjedVarselServiceTest {
     @Test
     fun `should request an azure token and make request on behalf of user for active beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -61,14 +61,14 @@ class BeskjedVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getAktiveVarsler(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for inactive beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -86,14 +86,14 @@ class BeskjedVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getInaktiveVarsler(azureToken, fnr) }
     }
 
     @Test
     fun `should request an azure token and make request on behalf of user for all beskjed events`() {
         coEvery {
-            tokenFetcher.fetchTokenForVarselHandler()
+            tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
@@ -111,7 +111,7 @@ class BeskjedVarselServiceTest {
         result `should be equal to` transformedEvents
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
-        coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
+        coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { beskjedConsumer.getAlleVarsler(azureToken, fnr) }
     }
 }

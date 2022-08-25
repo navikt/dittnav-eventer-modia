@@ -27,8 +27,8 @@ class OppgaveVarselServiceTest {
 
     private val azureToken = AzureToken("tokenValue")
 
-    private val mockedEvents: List<Oppgave> = mockk()
-    private val transformedEvents: List<OppgaveDTO> = mockk()
+    private val mockedVarsler: List<Oppgave> = mockk()
+    private val transformedVarsler: List<OppgaveDTO> = mockk()
 
     @BeforeEach
     fun setupMock() {
@@ -41,76 +41,76 @@ class OppgaveVarselServiceTest {
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for active oppgave events`() {
+    fun `should request an azure token and make request on behalf of user for active oppgavevarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             oppgaveConsumer.getAktiveVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            OppgaveTransformer.toOppgaveDTO(mockedEvents)
-        } returns transformedEvents
+            OppgaveTransformer.toOppgaveDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             oppgaveVarselService.aktiveVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
+        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getAktiveVarsler(azureToken, fnr) }
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for inactive oppgave events`() {
+    fun `should request an azure token and make request on behalf of user for inactive oppgavevarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             oppgaveConsumer.getInaktiveVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            OppgaveTransformer.toOppgaveDTO(mockedEvents)
-        } returns transformedEvents
+            OppgaveTransformer.toOppgaveDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             oppgaveVarselService.inaktiveVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
+        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getInaktiveVarsler(azureToken, fnr) }
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for all oppgave events`() {
+    fun `should request an azure token and make request on behalf of user for all oppgavevarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             oppgaveConsumer.getAlleVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            OppgaveTransformer.toOppgaveDTO(mockedEvents)
-        } returns transformedEvents
+            OppgaveTransformer.toOppgaveDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             oppgaveVarselService.alleVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedEvents) }
+        verify(exactly = 1) { OppgaveTransformer.toOppgaveDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { oppgaveConsumer.getAlleVarsler(azureToken, fnr) }
     }

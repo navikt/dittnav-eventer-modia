@@ -27,8 +27,8 @@ class InnboksVarselServiceTest {
 
     private val azureToken = AzureToken("tokenValue")
 
-    private val mockedEvents: List<Innboks> = mockk()
-    private val transformedEvents: List<InnboksDTO> = mockk()
+    private val mockedVarsler: List<Innboks> = mockk()
+    private val transformedVarsler: List<InnboksDTO> = mockk()
 
     @BeforeEach
     fun setupMock() {
@@ -41,76 +41,76 @@ class InnboksVarselServiceTest {
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for active innboks events`() {
+    fun `should request an azure token and make request on behalf of user for active innboksvarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             innboksConsumer.getAktiveVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            InnboksTransformer.toInnboksDTO(mockedEvents)
-        } returns transformedEvents
+            InnboksTransformer.toInnboksDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             innboksVarselService.aktiveVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
+        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getAktiveVarsler(azureToken, fnr) }
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for inactive innboks events`() {
+    fun `should request an azure token and make request on behalf of user for inactive innboksvarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             innboksConsumer.getInaktiveVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            InnboksTransformer.toInnboksDTO(mockedEvents)
-        } returns transformedEvents
+            InnboksTransformer.toInnboksDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             innboksVarselService.inaktiveVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
+        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getInaktiveVarsler(azureToken, fnr) }
     }
 
     @Test
-    fun `should request an azure token and make request on behalf of user for all innboks events`() {
+    fun `should request an azure token and make request on behalf of user for all innboksvarsler`() {
         coEvery {
             tokenFetcher.fetchTokenForEventHandler()
         } returns azureToken
 
         coEvery {
             innboksConsumer.getAlleVarsler(azureToken, fnr)
-        } returns mockedEvents
+        } returns mockedVarsler
 
         every {
-            InnboksTransformer.toInnboksDTO(mockedEvents)
-        } returns transformedEvents
+            InnboksTransformer.toInnboksDTO(mockedVarsler)
+        } returns transformedVarsler
 
         val result = runBlocking {
             innboksVarselService.alleVarsler(fnr)
         }
 
-        result `should be equal to` transformedEvents
+        result `should be equal to` transformedVarsler
 
-        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedEvents) }
+        verify(exactly = 1) { InnboksTransformer.toInnboksDTO(mockedVarsler) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForEventHandler() }
         coVerify(exactly = 1) { innboksConsumer.getAlleVarsler(azureToken, fnr) }
     }

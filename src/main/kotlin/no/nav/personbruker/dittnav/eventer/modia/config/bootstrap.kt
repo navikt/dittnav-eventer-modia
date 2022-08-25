@@ -31,13 +31,16 @@ fun Application.api(
     authConfig()
 
     routing {
-        route("internal") {
-            healthApi()
-        }
-        authenticate {
-            oppgaveApi(oppgaveEventService)
-            innboksApi(innboksEventService)
-            beskjedApi(beskjedEventService)
+        route("/dittnav-eventer-modia") {
+            route("internal") {
+                healthApi()
+            }
+
+            authenticate {
+                oppgaveApi(oppgaveEventService)
+                innboksApi(innboksEventService)
+                beskjedApi(beskjedEventService)
+            }
         }
     }
 }

@@ -23,7 +23,6 @@ class BeskjdApiTest {
     @Test
     fun `setter opp api ruter`() {
         withTestApplication(mockApi()) {
-            println(allRoutes(this.application.feature(Routing)))
             allRoutes(this.application.feature(Routing)).size shouldBeEqualTo 14
         }
     }
@@ -32,11 +31,11 @@ class BeskjdApiTest {
     fun `bad request for ugyldig fødselsnummer i header`() {
         withTestApplication(mockApi()) {
             handleRequest {
-                handleRequest(HttpMethod.Get, "/fetch/beskjed/aktive").also {
+                handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/aktive").also {
                     it.response.status() shouldBeEqualTo BadRequest
                     it.response.content shouldBeEqualTo "Requesten mangler header-en 'fodselsnummer'"
                 }
-                handleRequest(HttpMethod.Get, "/fetch/beskjed/inaktive") {
+                handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
                     addHeader("fodselsnummer", "1234")
                 }.also {
                     it.response.status() shouldBeEqualTo BadRequest
@@ -51,8 +50,8 @@ class BeskjdApiTest {
         val dummyFnr = "16045571871"
         val beskjedEventService = mockk<BeskjedEventService>()
         coEvery { beskjedEventService.getInactiveCachedEventsForUser(User(dummyFnr)) } returns dummyBeskjeder(5)
-        withTestApplication(mockApi(beskjedEventService=beskjedEventService)){
-            handleRequest(HttpMethod.Get, "/fetch/beskjed/inaktive") {
+        withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
+            handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
                 addHeader("fodselsnummer", dummyFnr)
             }.also {
                 it.response.status() shouldBeEqualTo OK
@@ -82,7 +81,6 @@ private fun BeskjedDTO.createList(antall: Int): MutableList<BeskjedDTO> =
             list.add(this)
         }
     }
-
 
 fun allRoutes(root: Route): List<Route> {
     return listOf(root) + root.children.flatMap { allRoutes(it) }

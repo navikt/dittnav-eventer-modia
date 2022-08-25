@@ -8,32 +8,32 @@ import java.net.URL
 
 class InnboksConsumer(
     private val client: HttpClient,
-    eventHandlerBaseURL: URL
+    varselHandlerBaseURL: URL
 ) {
 
-    private val activeEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/aktive")
-    private val inactiveEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/inaktive")
-    private val allEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/innboks/all")
+    private val aktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/aktive")
+    private val inaktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/inaktive")
+    private val alleVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/innboks/all")
 
-    suspend fun getActiveEvents(accessToken: AzureToken, fnr: String): List<Innboks> {
+    suspend fun getAktiveVarsler(accessToken: AzureToken, fnr: String): List<Innboks> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, activeEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, aktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getInactiveEvents(accessToken: AzureToken, fnr: String): List<Innboks> {
+    suspend fun getInaktiveVarsler(accessToken: AzureToken, fnr: String): List<Innboks> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, inactiveEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, inaktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getAllEvents(accessToken: AzureToken, fnr: String): List<Innboks> {
+    suspend fun getAlleVarsler(accessToken: AzureToken, fnr: String): List<Innboks> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, allEventsEndpoint)
+            getExternalVarsler(accessToken, fnr, alleVarslerEndpoint)
         }
     }
 
-    private suspend fun getExternalEvents(accessToken: AzureToken, fnr: String, completePathToEndpoint: URL): List<Innboks> {
+    private suspend fun getExternalVarsler(accessToken: AzureToken, fnr: String, completePathToEndpoint: URL): List<Innboks> {
         return client.getWithAzureAndFnr(completePathToEndpoint, accessToken, fnr)
     }
 }

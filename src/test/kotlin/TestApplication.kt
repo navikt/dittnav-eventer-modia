@@ -3,7 +3,7 @@ import io.ktor.application.Application
 import io.mockk.mockk
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.config.api
-import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
+import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksVarselService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
 import no.nav.tms.token.support.authentication.installer.mock.installMockedAuthenticators
 import no.nav.tms.token.support.tokenx.validation.mock.SecurityLevel
@@ -11,7 +11,7 @@ internal val objectmapper = ObjectMapper()
 fun mockApi(
     authConfig: Application.() -> Unit = mockAuthBuilder(),
     oppgaveEventService: OppgaveEventService = mockk(relaxed = true),
-    innboksEventService: InnboksEventService = mockk(relaxed = true),
+    innboksVarselService: InnboksVarselService = mockk(relaxed = true),
     beskjedVarselService: BeskjedVarselService = mockk(relaxed = true)
 
 ): Application.() -> Unit {
@@ -20,7 +20,7 @@ fun mockApi(
         api(
             authConfig = {},
             oppgaveEventService = oppgaveEventService,
-            innboksEventService = innboksEventService,
+            innboksVarselService = innboksVarselService,
             beskjedVarselService = beskjedVarselService
         )
     }

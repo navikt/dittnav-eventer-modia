@@ -9,15 +9,14 @@ import no.nav.personbruker.dittnav.eventer.modia.common.respondWithError
 import no.nav.personbruker.dittnav.eventer.modia.config.doIfValidRequest
 import org.slf4j.LoggerFactory
 
-fun Route.innboksApi(innboksEventService: InnboksEventService) {
+fun Route.innboksApi(innboksVarselService: InnboksVarselService) {
 
-    val log = LoggerFactory.getLogger(InnboksEventService::class.java)
+    val log = LoggerFactory.getLogger(InnboksVarselService::class.java)
 
     get("/fetch/innboks/aktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val aktiveInnboksEvents = innboksEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, aktiveInnboksEvents)
+                call.respond(HttpStatusCode.OK, innboksVarselService.aktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -25,10 +24,9 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
     }
 
     get("/fetch/innboks/inaktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val inaktiveInnboksEvents = innboksEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, inaktiveInnboksEvents)
+                call.respond(HttpStatusCode.OK, innboksVarselService.inaktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -36,10 +34,9 @@ fun Route.innboksApi(innboksEventService: InnboksEventService) {
     }
 
     get("/fetch/innboks/all") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val innboksEvents = innboksEventService.getAllCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, innboksEvents)
+                call.respond(HttpStatusCode.OK, innboksVarselService.alleVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

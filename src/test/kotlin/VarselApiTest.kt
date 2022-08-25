@@ -12,7 +12,7 @@ import io.mockk.mockk
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedDTO
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksDTO
-import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
+import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksVarselService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveDTO
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
 import org.amshove.kluent.shouldBeEqualTo
@@ -84,13 +84,13 @@ class ApiTest {
     @Test
     fun innboksvarsler() {
         val dummyFnr = "16045571871"
-        val innboksEventService = mockk<InnboksEventService>()
+        val innboksVarselService = mockk<InnboksVarselService>()
         val rootPath = "/dittnav-eventer-modia/fetch/innboks"
-        coEvery { innboksEventService.getInactiveCachedEventsForUser(dummyFnr) } returns dummyInnboks(3)
-        coEvery { innboksEventService.getActiveCachedEventsForUser(dummyFnr) } returns dummyInnboks(1)
-        coEvery { innboksEventService.getAllCachedEventsForUser(dummyFnr) } returns dummyInnboks(6)
+        coEvery { innboksVarselService.inaktiveVarsler(dummyFnr) } returns dummyInnboks(3)
+        coEvery { innboksVarselService.aktiveVarsler(dummyFnr) } returns dummyInnboks(1)
+        coEvery { innboksVarselService.alleVarsler(dummyFnr) } returns dummyInnboks(6)
 
-        withTestApplication(mockApi(innboksEventService = innboksEventService)) {
+        withTestApplication(mockApi(innboksVarselService = innboksVarselService)) {
             assertVarselApiCall("$rootPath/inaktive", dummyFnr, 3)
             assertVarselApiCall("$rootPath/aktive", dummyFnr, 1)
             assertVarselApiCall("$rootPath/all", dummyFnr, 6)

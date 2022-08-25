@@ -12,7 +12,7 @@ import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedVarselService
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
-import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
+import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksVarselService
 import no.nav.personbruker.dittnav.eventer.modia.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
@@ -20,7 +20,7 @@ import no.nav.personbruker.dittnav.eventer.modia.oppgave.oppgaveApi
 fun Application.api(
     authConfig: Application.() -> Unit,
     oppgaveEventService: OppgaveEventService,
-    innboksEventService: InnboksEventService,
+    innboksVarselService: InnboksVarselService,
     beskjedVarselService: BeskjedVarselService
 ) {
     DefaultExports.initialize()
@@ -38,7 +38,7 @@ fun Application.api(
 
             authenticate {
                 oppgaveApi(oppgaveEventService)
-                innboksApi(innboksEventService)
+                innboksApi(innboksVarselService)
                 beskjedApi(beskjedVarselService)
             }
         }

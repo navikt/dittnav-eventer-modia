@@ -14,10 +14,9 @@ fun Route.beskjedApi(beskjedVarselService: BeskjedVarselService) {
     val log = LoggerFactory.getLogger(BeskjedVarselService::class.java)
 
     get("/fetch/beskjed/aktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val aktiveBeskjedEvents = beskjedVarselService.aktiveVarsler(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, aktiveBeskjedEvents)
+                call.respond(HttpStatusCode.OK, beskjedVarselService.aktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -25,10 +24,9 @@ fun Route.beskjedApi(beskjedVarselService: BeskjedVarselService) {
     }
 
     get("/fetch/beskjed/inaktive") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val inaktiveBeskjedEvents = beskjedVarselService.inaktiveVarsler(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, inaktiveBeskjedEvents)
+                call.respond(HttpStatusCode.OK, beskjedVarselService.inaktiveVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -36,10 +34,9 @@ fun Route.beskjedApi(beskjedVarselService: BeskjedVarselService) {
     }
 
     get("/fetch/beskjed/all") {
-        doIfValidRequest { userToFetchEventsFor ->
+        doIfValidRequest { fnr ->
             try {
-                val beskjedEvents = beskjedVarselService.alleVarsler(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, beskjedEvents)
+                call.respond(HttpStatusCode.OK, beskjedVarselService.alleVarsler(fnr))
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

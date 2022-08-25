@@ -47,7 +47,7 @@ class BeskjedVarselServiceTest {
         } returns azureToken
 
         coEvery {
-            beskjedConsumer.getActiveEvents(azureToken, fnr)
+            beskjedConsumer.getAktiveVarsler(azureToken, fnr)
         } returns mockedEvents
 
         every {
@@ -62,7 +62,7 @@ class BeskjedVarselServiceTest {
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
-        coVerify(exactly = 1) { beskjedConsumer.getActiveEvents(azureToken, fnr) }
+        coVerify(exactly = 1) { beskjedConsumer.getAktiveVarsler(azureToken, fnr) }
     }
 
     @Test
@@ -72,7 +72,7 @@ class BeskjedVarselServiceTest {
         } returns azureToken
 
         coEvery {
-            beskjedConsumer.getInactiveEvents(azureToken, fnr)
+            beskjedConsumer.getInaktiveVarsler(azureToken, fnr)
         } returns mockedEvents
 
         every {
@@ -87,7 +87,7 @@ class BeskjedVarselServiceTest {
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
-        coVerify(exactly = 1) { beskjedConsumer.getInactiveEvents(azureToken, fnr) }
+        coVerify(exactly = 1) { beskjedConsumer.getInaktiveVarsler(azureToken, fnr) }
     }
 
     @Test
@@ -97,7 +97,7 @@ class BeskjedVarselServiceTest {
         } returns azureToken
 
         coEvery {
-            beskjedConsumer.getAllEvents(azureToken, fnr)
+            beskjedConsumer.getAlleVarsler(azureToken, fnr)
         } returns mockedEvents
 
         every {
@@ -112,6 +112,6 @@ class BeskjedVarselServiceTest {
 
         verify(exactly = 1) { BeskjedTransformer.toBeskjedDTO(mockedEvents) }
         coVerify(exactly = 1) { tokenFetcher.fetchTokenForVarselHandler() }
-        coVerify(exactly = 1) { beskjedConsumer.getAllEvents(azureToken, fnr) }
+        coVerify(exactly = 1) { beskjedConsumer.getAlleVarsler(azureToken, fnr) }
     }
 }

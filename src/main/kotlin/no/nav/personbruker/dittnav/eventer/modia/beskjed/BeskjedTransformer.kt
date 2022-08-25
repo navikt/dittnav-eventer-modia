@@ -7,6 +7,7 @@ object BeskjedTransformer {
         }
     }
 
+    //TODO: finn ut av om vi skal beholde eventId i DTO-en
     private fun toBeskjedDTO(beskjed: Beskjed): BeskjedDTO =
         beskjed.let {
             BeskjedDTO(

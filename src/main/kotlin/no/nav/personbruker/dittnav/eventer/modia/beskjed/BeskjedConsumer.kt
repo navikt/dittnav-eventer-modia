@@ -8,32 +8,32 @@ import java.net.URL
 
 class BeskjedConsumer(
     private val client: HttpClient,
-    eventHandlerBaseURL: URL
+    varselHandlerBaseURL: URL
 ) {
 
-    private val activeEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/aktive")
-    private val inactiveEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/inaktive")
-    private val allEventsEndpoint = URL("$eventHandlerBaseURL/fetch/modia/beskjed/all")
+    private val aktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/aktive")
+    private val inaktiveVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/inaktive")
+    private val alleVarslerEndpoint = URL("$varselHandlerBaseURL/fetch/modia/beskjed/all")
 
-    suspend fun getActiveEvents(accessToken: AzureToken, fnr: String): List<Beskjed> {
+    suspend fun getAktiveVarsler(accessToken: AzureToken, fnr: String): List<Beskjed> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, activeEventsEndpoint)
+            getEksterneVarsler(accessToken, fnr, aktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getInactiveEvents(accessToken: AzureToken, fnr: String): List<Beskjed> {
+    suspend fun getInaktiveVarsler(accessToken: AzureToken, fnr: String): List<Beskjed> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, inactiveEventsEndpoint)
+            getEksterneVarsler(accessToken, fnr, inaktiveVarslerEndpoint)
         }
     }
 
-    suspend fun getAllEvents(accessToken: AzureToken, fnr: String): List<Beskjed> {
+    suspend fun getAlleVarsler(accessToken: AzureToken, fnr: String): List<Beskjed> {
         return retryOnConnectionLost {
-            getExternalEvents(accessToken, fnr, allEventsEndpoint)
+            getEksterneVarsler(accessToken, fnr, alleVarslerEndpoint)
         }
     }
 
-    private suspend fun getExternalEvents(accessToken: AzureToken, fnr: String, completePathToEndpoint: URL): List<Beskjed> {
+    private suspend fun getEksterneVarsler(accessToken: AzureToken, fnr: String, completePathToEndpoint: URL): List<Beskjed> {
         return client.getWithAzureAndFnr(completePathToEndpoint, accessToken, fnr)
     }
 }

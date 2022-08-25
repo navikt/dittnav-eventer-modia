@@ -16,7 +16,7 @@ fun Route.beskjedApi(beskjedEventService: BeskjedEventService) {
     get("/fetch/beskjed/aktive") {
         doIfValidRequest { userToFetchEventsFor ->
             try {
-                val aktiveBeskjedEvents = beskjedEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
+                val aktiveBeskjedEvents = beskjedEventService.aktiveVarsler(userToFetchEventsFor)
                 call.respond(HttpStatusCode.OK, aktiveBeskjedEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)

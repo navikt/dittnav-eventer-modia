@@ -5,19 +5,17 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.personbruker.dittnav.eventer.modia.common.User
 import org.slf4j.LoggerFactory
 
 val log = LoggerFactory.getLogger("requestValidation.tk")
 
-suspend inline fun PipelineContext<Unit, ApplicationCall>.doIfValidRequest(handler: (fnr: User) -> Unit) {
+suspend inline fun PipelineContext<Unit, ApplicationCall>.doIfValidRequest(handler: (fnr: String) -> Unit) {
     val headerName = "fodselsnummer"
     val fnrHeader = call.request.headers[headerName]
 
     if (fnrHeader != null) {
         if (isFodselsnummerOfValidLength(fnrHeader)) {
-            val user = User(fnrHeader)
-            handler.invoke(user)
+            handler.invoke(fnrHeader)
         } else {
             val msg = "Header-en '$headerName' inneholder ikke et gyldig fødselsnummer."
             log.warn(msg)

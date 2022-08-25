@@ -1,5 +1,3 @@
-package no.nav.personbruker.dittnav.eventer.modia.beskjed
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.application.feature
 import io.ktor.http.HttpMethod
@@ -11,8 +9,8 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.withTestApplication
 import io.mockk.coEvery
 import io.mockk.mockk
-import mockApi
-import no.nav.personbruker.dittnav.eventer.modia.common.User
+import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedDTO
+import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
@@ -49,7 +47,7 @@ class BeskjdApiTest {
     fun `inaktive varlser`() {
         val dummyFnr = "16045571871"
         val beskjedEventService = mockk<BeskjedEventService>()
-        coEvery { beskjedEventService.getInactiveCachedEventsForUser(User(dummyFnr)) } returns dummyBeskjeder(5)
+        coEvery { beskjedEventService.getInactiveCachedEventsForUser(dummyFnr) } returns dummyBeskjeder(5)
         withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
             handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
                 addHeader("fodselsnummer", dummyFnr)

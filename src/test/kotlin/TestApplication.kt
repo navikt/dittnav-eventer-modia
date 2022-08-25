@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.application.Application
 import io.mockk.mockk
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
@@ -6,7 +7,7 @@ import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
 import no.nav.tms.token.support.authentication.installer.mock.installMockedAuthenticators
 import no.nav.tms.token.support.tokenx.validation.mock.SecurityLevel
-
+internal val objectmapper = ObjectMapper()
 fun mockApi(
     authConfig: Application.() -> Unit = mockAuthBuilder(),
     oppgaveEventService: OppgaveEventService = mockk(relaxed = true),

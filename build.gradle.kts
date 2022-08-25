@@ -58,6 +58,7 @@ dependencies {
     testImplementation(Mockk.mockk)
     testImplementation(Tms.KtorTokenSupport.authenticationInstallerMock)
     testImplementation(Tms.KtorTokenSupport.tokenXValidationMock)
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
 }
 
 application {

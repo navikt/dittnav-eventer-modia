@@ -17,7 +17,7 @@ import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
 
-class BeskjdApiTest {
+class BeskjedApiTest {
     private val objectmapper = ObjectMapper()
 
     @Test
@@ -61,7 +61,7 @@ class BeskjdApiTest {
     }
 }
 
-private fun dummyBeskjeder(antall: Int = 0): List<BeskjedDTO> = BeskjedDTO(
+private fun dummyBeskjeder(antall: Int = 0): List<Beskjed> = Beskjed(
     fodselsnummer = "",
     grupperingsId = "",
     eventId = "",
@@ -72,11 +72,13 @@ private fun dummyBeskjeder(antall: Int = 0): List<BeskjedDTO> = BeskjedDTO(
     synligFremTil = ZonedDateTime.now().plusDays(1),
     tekst = "",
     link = "",
-    aktiv = false
+    aktiv = false,
+    eksternVarslingSendt = false,
+    eksternVarslingKanaler = emptyList()
 ).createList(antall = antall)
 
-private fun BeskjedDTO.createList(antall: Int): MutableList<BeskjedDTO> =
-    mutableListOf<BeskjedDTO>().also { list ->
+private fun Beskjed.createList(antall: Int): MutableList<Beskjed> =
+    mutableListOf<Beskjed>().also { list ->
         for (i in 1..antall) {
             list.add(this)
         }

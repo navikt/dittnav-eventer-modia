@@ -5,10 +5,12 @@ import io.ktor.application.install
 import io.ktor.auth.authenticate
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.metrics.micrometer.MicrometerMetrics
 import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.serialization.json
-import io.prometheus.client.hotspot.DefaultExports
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
@@ -23,17 +25,21 @@ fun Application.api(
     innboksEventService: InnboksEventService,
     beskjedEventService: BeskjedEventService
 ) {
-    DefaultExports.initialize()
+    val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+
     install(DefaultHeaders)
     install(ContentNegotiation) {
         json()
+    }
+    install(MicrometerMetrics) {
+        registry = prometheusMeterRegistry
     }
     authConfig()
 
     routing {
         route("/dittnav-eventer-modia") {
             route("internal") {
-                healthApi()
+                healthApi(prometheusMeterRegistry)
             }
 
             authenticate {

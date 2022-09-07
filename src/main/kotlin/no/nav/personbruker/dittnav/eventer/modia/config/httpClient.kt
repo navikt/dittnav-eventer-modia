@@ -1,6 +1,9 @@
 package no.nav.personbruker.dittnav.eventer.modia.config // ktlint-disable filename
 
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.header
 import io.ktor.client.request.request
@@ -15,6 +18,17 @@ import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.tms.token.support.azure.exchange.service.AzureHeader
 import java.net.URL
 
+object HttpClientBuilder {
+
+    fun build(): HttpClient {
+        return HttpClient(Apache) {
+            install(ContentNegotiation) {
+                jsonConfig()
+            }
+            install(HttpTimeout)
+        }
+    }
+}
 suspend inline fun <reified T> HttpClient.getWithAzureAndFnr(url: URL, accessToken: AzureToken, fnr: String): T = withContext(Dispatchers.IO) {
     request {
         url(url)

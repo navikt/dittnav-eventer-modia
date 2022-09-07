@@ -2,8 +2,8 @@
 import io.ktor.server.application.Application
 import io.ktor.server.testing.TestApplicationBuilder
 import io.mockk.mockk
+import no.nav.personbruker.dittnav.eventer.modia.api
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
-import no.nav.personbruker.dittnav.eventer.modia.config.api
 import no.nav.personbruker.dittnav.eventer.modia.innboks.InnboksEventService
 import no.nav.personbruker.dittnav.eventer.modia.oppgave.OppgaveEventService
 import no.nav.tms.token.support.authentication.installer.mock.installMockedAuthenticators

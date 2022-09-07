@@ -64,7 +64,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("no.nav.personbruker.dittnav.eventer.modia.config.AppKt")
+    mainClass.set("no.nav.personbruker.dittnav.eventer.modia.AppKt")
 }
 
 tasks {

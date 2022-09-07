@@ -22,7 +22,7 @@ internal fun issoAuthenticationBuilder(environment: Environment): Application.()
 }
 
 fun JWTAuthenticationProvider.Config.setupIssoAuthentication(environment: Environment) {
-    // authHeader(Security::useTokenFromCookie)
+     authHeader(Security::useTokenFromCookie)
     val jwkProvider = Security.initJwkProvider(environment.issoJwksUrl)
     verifier(jwkProvider, environment.issoIssuer)
     realm = "dittnav-eventer-modia"

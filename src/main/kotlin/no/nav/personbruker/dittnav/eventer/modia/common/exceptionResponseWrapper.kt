@@ -1,8 +1,8 @@
 package no.nav.personbruker.dittnav.eventer.modia.common
 
-import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.response.respond
 import org.slf4j.Logger
 
 suspend fun respondWithError(call: ApplicationCall, log: Logger, exception: Exception) {

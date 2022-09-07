@@ -1,16 +1,15 @@
 package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.ktor.application.feature
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode.Companion.BadRequest
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode.Companion.OK
-import io.ktor.routing.Route
-import io.ktor.routing.Routing
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.withTestApplication
+import io.ktor.server.routing.Route
+import io.ktor.server.testing.testApplication
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import mockApi
 import no.nav.personbruker.dittnav.eventer.modia.common.User
 import org.amshove.kluent.shouldBeEqualTo
@@ -18,44 +17,19 @@ import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
 
 class BeskjedApiTest {
-    private val objectmapper = ObjectMapper()
-
-    @Test
-    fun `setter opp api ruter`() {
-        withTestApplication(mockApi()) {
-            allRoutes(this.application.feature(Routing)).size shouldBeEqualTo 14
-        }
-    }
-
-    @Test
-    fun `bad request for ugyldig fødselsnummer i header`() {
-        withTestApplication(mockApi()) {
-            handleRequest {
-                handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/aktive").also {
-                    it.response.status() shouldBeEqualTo BadRequest
-                    it.response.content shouldBeEqualTo "Requesten mangler header-en 'fodselsnummer'"
-                }
-                handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
-                    addHeader("fodselsnummer", "1234")
-                }.also {
-                    it.response.status() shouldBeEqualTo BadRequest
-                    it.response.content shouldBeEqualTo "Header-en 'fodselsnummer' inneholder ikke et gyldig fødselsnummer."
-                }
-            }
-        }
-    }
 
     @Test
     fun `inaktive varlser`() {
         val dummyFnr = "16045571871"
         val beskjedEventService = mockk<BeskjedEventService>()
         coEvery { beskjedEventService.getInactiveCachedEventsForUser(User(dummyFnr)) } returns dummyBeskjeder(5)
-        withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
-            handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
-                addHeader("fodselsnummer", dummyFnr)
+        testApplication {
+            (mockApi(beskjedEventService = beskjedEventService))
+            client.get("/dittnav-eventer-modia/fetch/beskjed/inaktive") {
+                header("fodselsnummer", dummyFnr)
             }.also {
-                it.response.status() shouldBeEqualTo OK
-                objectmapper.readTree(it.response.content).size() shouldBeEqualTo 5
+                it.status shouldBeEqualTo OK
+                (Json.decodeFromString(it.bodyAsText()) as List<Beskjed>).size shouldBeEqualTo 5
             }
         }
     }

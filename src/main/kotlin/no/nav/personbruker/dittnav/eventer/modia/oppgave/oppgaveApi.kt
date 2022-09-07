@@ -1,10 +1,9 @@
 package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
-import io.ktor.application.call
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.get
+import io.ktor.server.application.call
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
 import no.nav.personbruker.dittnav.eventer.modia.common.respondWithError
 import no.nav.personbruker.dittnav.eventer.modia.config.doIfValidRequest
 import org.slf4j.LoggerFactory
@@ -17,7 +16,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
         doIfValidRequest { userToFetchEventsFor ->
             try {
                 val aktiveOppgaveEvents = oppgaveEventService.getActiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, aktiveOppgaveEvents)
+                call.respond(aktiveOppgaveEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -28,7 +27,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
         doIfValidRequest { userToFetchEventsFor ->
             try {
                 val inaktiveOppgaveEvents = oppgaveEventService.getInactiveCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, inaktiveOppgaveEvents)
+                call.respond(inaktiveOppgaveEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }
@@ -39,7 +38,7 @@ fun Route.oppgaveApi(oppgaveEventService: OppgaveEventService) {
         doIfValidRequest { userToFetchEventsFor ->
             try {
                 val oppgaveEvents = oppgaveEventService.getAllCachedEventsForUser(userToFetchEventsFor)
-                call.respond(HttpStatusCode.OK, oppgaveEvents)
+                call.respond(oppgaveEvents)
             } catch (exception: Exception) {
                 respondWithError(call, log, exception)
             }

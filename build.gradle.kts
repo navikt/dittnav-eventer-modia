@@ -28,23 +28,30 @@ repositories {
 
 dependencies {
     implementation(Hikari.cp)
-    implementation(Ktor.auth)
-    implementation(Ktor.authJwt)
-    implementation(Ktor.clientApache)
-    implementation(Ktor.clientJackson)
-    implementation(Ktor.clientJson)
-    implementation(Ktor.clientSerializationJvm)
-    implementation(Ktor.metricsMicrometer)
-    implementation(Ktor.serialization)
-    implementation(Ktor.serverNetty)
+
+    implementation(Ktor2.Server.core)
+    implementation(Ktor2.Server.netty)
+    implementation(Ktor2.Server.defaultHeaders)
+    implementation(Ktor2.Server.contentNegotiation)
+    implementation(Ktor2.Server.metricsMicrometer)
+    implementation(Ktor2.Server.auth)
+    implementation("io.ktor:ktor-server-auth-jwt:2.1.1")
+    implementation(Ktor2.Client.core)
+    implementation(Ktor2.Client.apache)
+    implementation(Ktor2.Client.contentNegotiation)
+    implementation(Ktor2.TmsTokenSupport.azureExchange)
+    implementation(Ktor2.kotlinX)
+
     implementation(Logback.classic)
     implementation(Logstash.logbackEncoder)
     implementation(Micrometer.registryPrometheus)
     implementation(NAV.vaultJdbc)
     implementation(Postgresql.postgresql)
 
-    implementation(Tms.KtorTokenSupport.azureExchange)
-    testImplementation(Ktor.serverTestHost)
+    testImplementation(Ktor2.Test.clientMock)
+    testImplementation(Ktor2.Test.serverTestHost)
+    testImplementation(Ktor2.TmsTokenSupport.authenticationInstallerMock)
+    testImplementation(Ktor2.TmsTokenSupport.tokenXValidationMock)
     testImplementation(Bouncycastle.bcprovJdk15on)
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)
@@ -53,8 +60,7 @@ dependencies {
     testImplementation(Junit.engine)
     testImplementation(Kluent.kluent)
     testImplementation(Mockk.mockk)
-    testImplementation(Tms.KtorTokenSupport.authenticationInstallerMock)
-    testImplementation(Tms.KtorTokenSupport.tokenXValidationMock)
+    testImplementation(Junit.params)
 }
 
 application {

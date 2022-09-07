@@ -2,16 +2,16 @@ package no.nav.personbruker.dittnav.eventer.modia.config
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCall
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.JWTAuthenticationProvider
-import io.ktor.auth.jwt.JWTCredential
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.http.auth.parseAuthorizationHeader
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.jwt.JWTAuthenticationProvider
+import io.ktor.server.auth.jwt.JWTCredential
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.jwt.jwt
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
@@ -21,8 +21,8 @@ internal fun issoAuthenticationBuilder(environment: Environment): Application.()
     }
 }
 
-fun JWTAuthenticationProvider.Configuration.setupIssoAuthentication(environment: Environment) {
-    authHeader(Security::useTokenFromCookie)
+fun JWTAuthenticationProvider.Config.setupIssoAuthentication(environment: Environment) {
+    // authHeader(Security::useTokenFromCookie)
     val jwkProvider = Security.initJwkProvider(environment.issoJwksUrl)
     verifier(jwkProvider, environment.issoIssuer)
     realm = "dittnav-eventer-modia"

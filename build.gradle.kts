@@ -35,7 +35,7 @@ dependencies {
     implementation(Ktor2.Server.contentNegotiation)
     implementation(Ktor2.Server.metricsMicrometer)
     implementation(Ktor2.Server.auth)
-    implementation("io.ktor:ktor-server-auth-jwt:2.1.1")
+    implementation(Ktor2.Server.authJwt)
     implementation(Ktor2.Client.core)
     implementation(Ktor2.Client.apache)
     implementation(Ktor2.Client.contentNegotiation)

@@ -11,6 +11,7 @@ import io.ktor.routing.routing
 import io.ktor.serialization.json
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import kotlinx.serialization.json.Json
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.BeskjedEventService
 import no.nav.personbruker.dittnav.eventer.modia.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventer.modia.common.healthApi
@@ -29,7 +30,7 @@ fun Application.api(
 
     install(DefaultHeaders)
     install(ContentNegotiation) {
-        json()
+        json(Json { ignoreUnknownKeys = true })
     }
     install(MicrometerMetrics) {
         registry = prometheusMeterRegistry

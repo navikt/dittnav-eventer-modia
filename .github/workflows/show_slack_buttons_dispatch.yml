@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 'Sjekker ut en branchen det ønskes å lage et docker-image for'
         run: |
@@ -23,19 +23,11 @@ jobs:
           echo "CURRENT_REF=$(git log -1 --pretty='%H')" >> $GITHUB_ENV
 
       - name: Setup java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: '17.x'
-
-      - name: Finn cache-variabler
-        uses: navikt/pb-common-gh-actions/cache-prep@v2
-
-      - name: Sett opp cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ env.CACHE_PATHS }}
-          key: ${{ runner.os }}${{ env.CACHE_KEY_NAMESPACE }}${{ hashFiles(env.CACHE_KEY_HASHED_PATH) }}
+          cache: 'gradle'
 
       - name: Bygg prosjekt
         uses: navikt/pb-common-gh-actions/build@v2

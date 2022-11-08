@@ -2,8 +2,6 @@ package no.nav.personbruker.dittnav.eventer.modia.beskjed
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.application.feature
-import io.ktor.client.HttpClient
-import io.ktor.client.features.HttpTimeout
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -13,14 +11,17 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.withTestApplication
 import io.mockk.coEvery
 import io.mockk.mockk
+import jsonArray
 import mockApi
 import mockEngine
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
-import no.nav.personbruker.dittnav.eventer.modia.config.jsonConfig
+import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldContainAll
 import org.junit.jupiter.api.Test
 import testHttpClient
+import times
 import java.net.URL
 import java.time.ZonedDateTime
 
@@ -61,54 +62,84 @@ class BeskjedApiTest {
 
     @Test
     fun `inaktive varlser`() {
-        val (eventhandlerRespons, forventetbeskjed) = mockContent(size = 5)
+        val (eventhandlerRespons, forventedebeskjeder) = mockContent(size = 5)
         val dummyFnr = "16045571871"
         val beskjedEventService = BeskjedEventService(
             beskjedConsumer = BeskjedConsumer(
-                client = testHttpClient(mockEngine(inactiveEventsEndpoint, eventhandlerRespons)) ,
+                client = testHttpClient(mockEngine(inactiveEventsEndpoint, eventhandlerRespons)),
                 eventHandlerBaseURL = URL(eventhandlertestURL)
-            ), azureTokenFetcher = mockAzureService
+            ),
+            azureTokenFetcher = mockAzureService
         )
 
         withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
             handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/inaktive") {
                 addHeader("fodselsnummer", dummyFnr)
-            }.also {
-                it.response.status() shouldBeEqualTo OK
-                objectmapper.readTree(it.response.content).size() shouldBeEqualTo 5
+            }.apply {
+                response.status() shouldBeEqualTo OK
+                objectmapper.readTree(response.content).apply {
+                    size() shouldBe 5
+                    map { it["eventId"].asText() } shouldContainAll forventedebeskjeder.map { it.eventId }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `aktive beskjeder`() {
+        val (eventhandlerRespons, forventedebeskjeder) = mockContent(size = 1)
+        val dummyFnr = "16045571871"
+        val beskjedEventService = BeskjedEventService(
+            beskjedConsumer = BeskjedConsumer(
+                client = testHttpClient(mockEngine(activeEventsEndpoint, eventhandlerRespons)),
+                eventHandlerBaseURL = URL(eventhandlertestURL)
+            ),
+            azureTokenFetcher = mockAzureService
+        )
+
+        withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
+            handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/aktive") {
+                addHeader("fodselsnummer", dummyFnr)
+            }.apply {
+                response.status() shouldBeEqualTo OK
+                objectmapper.readTree(response.content).apply {
+                    size() shouldBe 1
+                    map { it["eventId"].asText() } shouldContainAll forventedebeskjeder.map { it.eventId }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `alle beskjeder`() {
+        val (eventhandlerRespons, forventedebeskjeder) = mockContent(size = 12)
+        val dummyFnr = "16045571871"
+        val beskjedEventService = BeskjedEventService(
+            beskjedConsumer = BeskjedConsumer(
+                client = testHttpClient(mockEngine(allEventsEndpoint, eventhandlerRespons)),
+                eventHandlerBaseURL = URL(eventhandlertestURL)
+            ),
+            azureTokenFetcher = mockAzureService
+        )
+
+        withTestApplication(mockApi(beskjedEventService = beskjedEventService)) {
+            handleRequest(HttpMethod.Get, "/dittnav-eventer-modia/fetch/beskjed/all") {
+                addHeader("fodselsnummer", dummyFnr)
+            }.apply {
+                response.status() shouldBeEqualTo OK
+                objectmapper.readTree(response.content).apply {
+                    size() shouldBe 12
+                    map { it["eventId"].asText() } shouldContainAll forventedebeskjeder.map { it.eventId }
+                }
             }
         }
     }
 }
 
-private fun dummyBeskjeder(antall: Int = 0): List<Beskjed> = Beskjed(
-    fodselsnummer = "",
-    grupperingsId = "",
-    eventId = "",
-    forstBehandlet = ZonedDateTime.now().minusMinutes(9),
-    produsent = "",
-    sikkerhetsnivaa = 0,
-    sistOppdatert = ZonedDateTime.now(),
-    synligFremTil = ZonedDateTime.now().plusDays(1),
-    tekst = "",
-    link = "",
-    aktiv = false,
-    eksternVarslingSendt = false,
-    eksternVarslingKanaler = emptyList()
-).createList(antall = antall)
-
-private fun Beskjed.createList(antall: Int): MutableList<Beskjed> =
-    mutableListOf<Beskjed>().also { list ->
-        for (i in 1..antall) {
-            list.add(this)
-        }
-    }
-
 fun allRoutes(root: Route): List<Route> {
     return listOf(root) + root.children.flatMap { allRoutes(it) }
         .filter { it.toString().contains("method") && it.toString() != "/" }
 }
-
 
 private fun mockContent(
     førstBehandlet: ZonedDateTime = ZonedDateTime.now().minusDays(1),
@@ -119,12 +150,11 @@ private fun mockContent(
     val synligFremTilString = synligFremTil?.let {
         """"${synligFremTil.withFixedOffsetZone()}""""
     } ?: "null"
-
     return Pair(
         """  {
         "fodselsnummer": "123",
         "grupperingsId": "",
-        "eventId": "",
+        "eventId": "1988",
         "forstBehandlet": "${førstBehandlet.withFixedOffsetZone()}",
         "produsent": "",
         "sikkerhetsnivaa": 0,
@@ -135,12 +165,13 @@ private fun mockContent(
         "appnavn": "appappapp",
         "aktiv": false,
         "eksternVarslingSendt": true,
+        "ukjentFelt": "tulleverdi",
         "eksternVarslingKanaler":["SMS", "EPOST"]
       }""".jsonArray(size),
         Beskjed(
             fodselsnummer = "123",
             grupperingsId = "",
-            eventId = "",
+            eventId = "1988",
             forstBehandlet = førstBehandlet.withFixedOffsetZone(),
             produsent = "",
             sikkerhetsnivaa = 0,
@@ -154,13 +185,3 @@ private fun mockContent(
         ) * size
     )
 }
-
-private fun String.jsonArray(size: Int): String =
-    (1..size).joinToString(separator = ",", prefix = "[", postfix = "]") { this }
-
-private operator fun Beskjed.times(size: Int): List<Beskjed> = mutableListOf<Beskjed>().also { list ->
-    for (i in 1..size) {
-        list.add(this)
-    }
-}
-

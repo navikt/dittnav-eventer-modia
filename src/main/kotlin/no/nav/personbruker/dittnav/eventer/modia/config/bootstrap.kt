@@ -42,11 +42,11 @@ fun Application.api(
             route("internal") {
                 healthApi(prometheusMeterRegistry)
             }
+            beskjedApi(beskjedEventService)
 
             authenticate {
                 oppgaveApi(oppgaveEventService)
                 innboksApi(innboksEventService)
-                beskjedApi(beskjedEventService)
             }
         }
     }

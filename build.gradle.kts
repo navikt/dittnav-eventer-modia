@@ -45,6 +45,7 @@ dependencies {
 
     implementation(Tms.KtorTokenSupport.azureExchange)
     testImplementation(Ktor.serverTestHost)
+    testImplementation("io.ktor:ktor-client-mock:1.6.8")
     testImplementation(Bouncycastle.bcprovJdk15on)
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)

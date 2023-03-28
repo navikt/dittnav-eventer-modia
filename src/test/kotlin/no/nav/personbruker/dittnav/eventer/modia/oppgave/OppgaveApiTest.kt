@@ -72,8 +72,7 @@ private fun dummyOppgaveer(antall: Int = 0): List<Oppgave> = Oppgave(
     tekst = "",
     link = "",
     aktiv = false,
-    eksternVarslingSendt = false,
-    eksternVarslingKanaler = emptyList()
+    eksternVarsling = null
 ).createList(antall = antall)
 
 private fun Oppgave.createList(antall: Int): MutableList<Oppgave> =

@@ -72,8 +72,7 @@ private fun dummyInnbokser(antall: Int = 0): List<Innboks> = Innboks(
     tekst = "",
     link = "",
     aktiv = false,
-    eksternVarslingSendt = false,
-    eksternVarslingKanaler = emptyList()
+    eksternVarsling = null
 ).createList(antall = antall)
 
 private fun Innboks.createList(antall: Int): MutableList<Innboks> =

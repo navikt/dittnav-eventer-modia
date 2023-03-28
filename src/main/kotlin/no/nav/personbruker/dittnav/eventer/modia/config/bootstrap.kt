@@ -53,6 +53,11 @@ fun Application.api(
                 innboksApi(innboksEventService)
                 beskjedApi(beskjedEventService)
             }
+            route("/test") {
+                oppgaveApi(oppgaveEventService)
+                innboksApi(innboksEventService)
+                beskjedApi(beskjedEventService)
+            }
         }
     }
 }

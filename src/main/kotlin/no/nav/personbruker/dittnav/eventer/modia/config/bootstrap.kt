@@ -30,7 +30,12 @@ fun Application.api(
 
     install(DefaultHeaders)
     install(ContentNegotiation) {
-        json(Json { ignoreUnknownKeys = true })
+        json(
+            Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            }
+        )
     }
     install(MicrometerMetrics) {
         registry = prometheusMeterRegistry

@@ -3,6 +3,7 @@ package no.nav.personbruker.dittnav.eventer.modia.oppgave
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarsling
 import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTimeSerializer
 import java.time.ZonedDateTime
 
@@ -18,6 +19,8 @@ data class Oppgave(
     val tekst: String,
     val link: String,
     val aktiv: Boolean,
-    val eksternVarslingSendt: Boolean,
-    val eksternVarslingKanaler: List<String>
-)
+    val eksternVarsling: EksternVarsling? = null
+) {
+    val eksternVarslingSendt = eksternVarsling?.sendt ?: false
+    val eksternVarslingKanaler = eksternVarsling?.sendteKanaler ?: emptyList()
+}

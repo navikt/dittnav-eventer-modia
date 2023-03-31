@@ -16,6 +16,8 @@ import mockApi
 import mockEngine
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
+import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarsling
+import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarslingHistorikkEntry
 import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainAll
@@ -164,9 +166,18 @@ private fun mockContent(
         "link": "",
         "appnavn": "appappapp",
         "aktiv": false,
-        "eksternVarslingSendt": true,
         "ukjentFelt": "tulleverdi",
-        "eksternVarslingKanaler":["SMS", "EPOST"]
+        "eksternVarsling": {
+            "sendt": true,
+            "renotifikasjonSendt": true,
+            "sendteKanaler": ["SMS", "EPOST"],
+            "prefererteKanaler": [],
+            "historikk": [
+                { "status": "bestilt", "melding": "Varsel bestilt", "tidspunkt": "$sistOppdatert" },
+                { "status": "sendt", "melding": "Varsel sendt på sms", "kanal": "SMS", "renotifikasjon": false, "tidspunkt": "$sistOppdatert" },
+                { "status": "sendt", "melding": "Varsel sendt på epost", "kanal": "EPOST", "renotifikasjon": false, "tidspunkt": "$sistOppdatert" }
+            ]
+        }
       }""".jsonArray(size),
         Beskjed(
             fodselsnummer = "123",
@@ -180,8 +191,33 @@ private fun mockContent(
             link = "",
             aktiv = false,
             synligFremTil = synligFremTil?.withFixedOffsetZone(),
-            eksternVarslingSendt = true,
-            eksternVarslingKanaler = listOf("SMS", "EPOST")
+            eksternVarsling = EksternVarsling(
+                sendt = true,
+                renotifikasjonSendt = false,
+                sendteKanaler = listOf("SMS", "EPOST"),
+                prefererteKanaler = emptyList(),
+                historikk = listOf(
+                    EksternVarslingHistorikkEntry(
+                        status = "bestilt",
+                        melding = "Varsel bestilt",
+                        tidspunkt = sistOppdatert
+                    ),
+                    EksternVarslingHistorikkEntry(
+                        status = "sendt",
+                        melding = "Varsel sendt på sms",
+                        kanal = "SMS",
+                        renotifikasjon = false,
+                        tidspunkt = sistOppdatert
+                    ),
+                    EksternVarslingHistorikkEntry(
+                        status = "sendt",
+                        melding = "Varsel sendt på epost",
+                        kanal = "EPOST",
+                        renotifikasjon = false,
+                        tidspunkt = sistOppdatert
+                    )
+                )
+            )
         ) * size
     )
 }

@@ -16,8 +16,8 @@ import mockApi
 import mockEngine
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureToken
 import no.nav.personbruker.dittnav.eventer.modia.common.AzureTokenFetcher
+import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarsling
 import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarslingHistorikkEntry
-import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarslingInfo
 import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainAll
@@ -191,7 +191,7 @@ private fun mockContent(
             link = "",
             aktiv = false,
             synligFremTil = synligFremTil?.withFixedOffsetZone(),
-            eksternVarsling = EksternVarslingInfo(
+            eksternVarsling = EksternVarsling(
                 sendt = true,
                 renotifikasjonSendt = false,
                 sendteKanaler = listOf("SMS", "EPOST"),

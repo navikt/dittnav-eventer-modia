@@ -3,7 +3,7 @@ package no.nav.personbruker.dittnav.eventer.modia.innboks
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarslingInfo
+import no.nav.personbruker.dittnav.eventer.modia.common.EksternVarsling
 import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTimeSerializer
 import java.time.ZonedDateTime
 
@@ -19,7 +19,7 @@ data class Innboks(
     val sikkerhetsnivaa: Int,
     val sistOppdatert: ZonedDateTime,
     val aktiv: Boolean,
-    val eksternVarsling: EksternVarslingInfo? = null
+    val eksternVarsling: EksternVarsling? = null
 ) {
     val eksternVarslingSendt = eksternVarsling?.sendt ?: false
     val eksternVarslingKanaler = eksternVarsling?.sendteKanaler ?: emptyList()

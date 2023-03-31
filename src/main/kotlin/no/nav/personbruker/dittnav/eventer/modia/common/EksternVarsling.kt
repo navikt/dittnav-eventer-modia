@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.eventer.modia.common.serializer.ZonedDateTime
 import java.time.ZonedDateTime
 
 @Serializable
-data class EksternVarslingInfo(
+data class EksternVarsling(
     val sendt: Boolean,
     val renotifikasjonSendt: Boolean,
     val prefererteKanaler: List<String>,
